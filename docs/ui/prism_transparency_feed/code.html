@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PRISM | Transparency Feed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&amp;family=Hanken+Grotesk:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#f9f9f9",
+                      "secondary-fixed": "#93f2f2",
+                      "inverse-on-surface": "#f1f1f1",
+                      "on-tertiary": "#ffffff",
+                      "soft-white": "#F9F9F9",
+                      "inverse-primary": "#c8c6c5",
+                      "surface-dim": "#dadada",
+                      "on-secondary-fixed": "#002020",
+                      "tertiary-fixed": "#e2e2e2",
+                      "outline-variant": "#c4c7c7",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "tertiary": "#000000",
+                      "secondary-container": "#90efef",
+                      "on-secondary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#c6c6c6",
+                      "secondary-fixed-dim": "#76d6d5",
+                      "on-surface-variant": "#444748",
+                      "on-secondary-fixed-variant": "#004f4f",
+                      "inverse-surface": "#2f3131",
+                      "surface-container-low": "#f3f3f3",
+                      "primary-fixed-dim": "#c8c6c5",
+                      "deep-charcoal": "#121212",
+                      "on-error-container": "#93000a",
+                      "on-primary-fixed-variant": "#474646",
+                      "on-primary-container": "#858383",
+                      "primary-fixed": "#e5e2e1",
+                      "surface-container": "#eeeeee",
+                      "on-primary-fixed": "#1c1b1b",
+                      "on-background": "#1a1c1c",
+                      "surface-container-high": "#e8e8e8",
+                      "surface-container-highest": "#e2e2e2",
+                      "on-error": "#ffffff",
+                      "silver-grey": "#E0E0E0",
+                      "on-secondary-container": "#006e6e",
+                      "error": "#ba1a1a",
+                      "surface-variant": "#e2e2e2",
+                      "primary": "#000000",
+                      "background": "#f9f9f9",
+                      "secondary": "#006a6a",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-container": "#838484",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "surface-tint": "#5f5e5e",
+                      "on-surface": "#1a1c1c",
+                      "surface-bright": "#f9f9f9",
+                      "tertiary-container": "#1a1c1c",
+                      "transparency-teal": "#008080",
+                      "outline": "#747878",
+                      "primary-container": "#1c1b1b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "element-gap": "1rem",
+                      "section-gap": "8rem",
+                      "gutter": "2rem",
+                      "margin-mobile": "1.5rem",
+                      "margin-page": "4rem"
+              },
+              "fontFamily": {
+                      "headline-display": ["EB Garamond"],
+                      "label-sm": ["Hanken Grotesk"],
+                      "label-md": ["Hanken Grotesk"],
+                      "headline-lg-mobile": ["EB Garamond"],
+                      "headline-lg": ["EB Garamond"],
+                      "body-lg": ["Hanken Grotesk"],
+                      "body-md": ["Hanken Grotesk"],
+                      "headline-md": ["EB Garamond"]
+              },
+              "fontSize": {
+                      "headline-display": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                      "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                      "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                      "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-md": ["28px", {"lineHeight": "1.3", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #f9f9f9;
+            background-image: radial-gradient(#E0E0E0 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            scroll-behavior: smooth;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            transition: all 0.3s ease;
+        }
+        .filling-arc {
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283;
+            transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .debate-node:hover .node-label {
+            opacity: 1;
+            transform: translateY(-8px);
+        }
+        .node-pulse {
+            animation: pulse 3s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.2; stroke-width: 1; }
+            50% { opacity: 0.6; stroke-width: 2; }
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface selection:bg-secondary-fixed">
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-silver-grey docked full-width top-0 z-50 sticky">
+<div class="flex justify-between items-center w-full px-margin-page max-w-[1280px] mx-auto h-20">
+<div class="flex items-center gap-4">
+<img alt="PRISM Logo" class="h-10 w-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwycrjJPMSNu6gzl_ZrjGx8LgGqQEaN-BoyQtIM_uDHESN2KzeZ-PLIWwaOchma3KiTc0wIHo6PthQ68ikwbDS0pPw2lEyYLTZz_EobTseMjBMiNbDxe-9fTt6hCUES2bknqUK8vFk8G8XE973bPyeYmnkN5nuWHai9rpRhTQWtseeEcJc8WUM6bUin6FVGUo4cetrCw4d2HlkdwkExnwfiw2ByBNlE9F-_dINO25YPg7egAgluGl8Ku3mvBbFkMQ3P4WDPIWk1K4"/>
+<span class="font-headline-md text-headline-md font-medium tracking-tighter text-primary">PRISM</span>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="font-hankenGrotesk text-label-md text-primary border-b border-primary pb-1 transition-opacity hover:opacity-70" href="#">Transparency Feed</a>
+<a class="font-hankenGrotesk text-label-md text-on-surface-variant hover:text-primary transition-opacity hover:opacity-70" href="#">How it Works</a>
+<a class="font-hankenGrotesk text-label-md text-on-surface-variant hover:text-primary transition-opacity hover:opacity-70" href="#">Pricing</a>
+</nav>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">search</button>
+<button class="bg-primary text-on-primary px-6 py-2 text-label-md font-medium active:scale-95 transition-transform">Verify Link</button>
+</div>
+</div>
+</header>
+<main class="max-w-[1280px] mx-auto flex flex-col md:flex-row min-h-screen px-margin-page">
+<!-- Main Transparency Feed -->
+<section class="flex-1 md:pr-12 py-12 border-r border-silver-grey">
+<div class="mb-16">
+<h1 class="font-headline-display text-headline-display mb-4">The Feed</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">Curated analysis of global narratives through the lens of multi-agent verification.</p>
+</div>
+<!-- Feed Item 1 (Active/Expanded) -->
+<article class="group mb-section-gap border-b border-silver-grey pb-16 last:border-0" id="story-1">
+<div class="flex justify-between items-start mb-6">
+<span class="text-label-sm uppercase tracking-widest text-on-surface-variant">Technology • 12m ago</span>
+<div class="flex items-center gap-2 text-transparency-teal">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-label-md">High Transparency</span>
+</div>
+</div>
+<h2 class="font-headline-lg text-headline-lg mb-6 leading-tight group-hover:text-secondary transition-colors cursor-pointer">
+                    Quantum Computing Sovereignty: The New Border in Global Silicon Relations
+                </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 line-clamp-3">
+                    Recent advancements in cryo-computing systems have triggered a series of quiet legislative maneuvers across three continents. While officially framed as security measures, internal debate suggests a deeper move toward algorithmic protectionism.
+                </p>
+<div class="flex flex-wrap items-center gap-8 mb-10">
+<a class="text-label-md flex items-center gap-2 hover:underline" href="#">
+                        Source: Global Intel Weekly <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+<button class="text-label-md font-semibold text-primary flex items-center gap-1 group/btn" onclick="toggleReasoning('reasoning-1')">
+                        View Reasoning 
+                        <span class="material-symbols-outlined group-hover/btn:translate-y-1 transition-transform">expand_more</span>
+</button>
+</div>
+<!-- Reasoning UI (Expanding) -->
+<div class="hidden overflow-hidden bg-surface-container-low p-8 border border-silver-grey transition-all duration-500" id="reasoning-1">
+<div class="grid md:grid-cols-2 gap-12 items-center">
+<div class="flex flex-col items-center text-center">
+<div class="relative w-48 h-48 mb-6">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#E0E0E0" stroke-width="4"></circle>
+<circle class="filling-arc" cx="50" cy="50" fill="none" r="45" stroke="#008080" stroke-linecap="round" stroke-width="4" style="stroke-dashoffset: 42;"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-headline-md text-headline-md leading-none">85</span>
+<span class="text-label-sm text-on-surface-variant">PRISM SCORE</span>
+</div>
+</div>
+<p class="text-label-md max-w-[200px]">High alignment across 12 analytical models</p>
+</div>
+<div>
+<h4 class="text-label-md font-bold uppercase mb-4 tracking-wider">Analysis Highlights</h4>
+<ul class="space-y-4">
+<li class="flex gap-4 items-start">
+<span class="material-symbols-outlined text-transparency-teal">check_circle</span>
+<span class="text-body-md">Primary source data confirmed via ledger verification.</span>
+</li>
+<li class="flex gap-4 items-start">
+<span class="material-symbols-outlined text-transparency-teal">check_circle</span>
+<span class="text-body-md">Cross-referenced with 4 concurrent legislative drafts.</span>
+</li>
+<li class="flex gap-4 items-start text-on-surface-variant">
+<span class="material-symbols-outlined">info</span>
+<span class="text-body-md italic">Minor framing bias detected in geopolitical impact assessment.</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+<!-- Feed Item 2 -->
+<article class="group mb-section-gap border-b border-silver-grey pb-16">
+<div class="flex justify-between items-start mb-6">
+<span class="text-label-sm uppercase tracking-widest text-on-surface-variant">Economy • 2h ago</span>
+<div class="flex items-center gap-2 text-on-error">
+<div class="bg-error px-2 py-0.5 rounded-sm">
+<span class="text-label-sm font-bold uppercase">Low Transparency</span>
+</div>
+</div>
+</div>
+<h2 class="font-headline-lg text-headline-lg mb-6 leading-tight group-hover:text-secondary transition-colors cursor-pointer">
+                    The Decentralized Reserve: Fact-Checking the Latest Inflation Report
+                </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 line-clamp-2">
+                    Claims regarding the total supply of digital assets are coming under fire as auditors discover significant discrepancies in off-chain reporting.
+                </p>
+<div class="flex items-center gap-8">
+<a class="text-label-md flex items-center gap-2 hover:underline" href="#">
+                        Source: Financial Ledger <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</div>
+</article>
+</section>
+<!-- Sidebar Analysis -->
+<aside class="w-full md:w-[400px] py-12 md:pl-12 flex flex-col gap-12">
+<!-- Multi-Agent Debate Visualization -->
+<div class="sticky top-32">
+<div class="mb-10">
+<h3 class="text-label-md font-bold uppercase tracking-[0.2em] mb-4">Multi-Agent Debate</h3>
+<p class="text-label-sm text-on-surface-variant mb-8">Active voices verifying "Quantum Computing Sovereignty"</p>
+<div class="relative w-full h-64 border border-silver-grey flex items-center justify-center overflow-hidden bg-white/50">
+<!-- Canvas-like network visualization -->
+<svg class="absolute inset-0 w-full h-full">
+<line class="node-pulse" stroke="#E0E0E0" x1="200" x2="100" y1="120" y2="60"></line>
+<line class="node-pulse" stroke="#E0E0E0" x1="200" x2="300" y1="120" y2="60"></line>
+<line class="node-pulse" stroke="#E0E0E0" x1="200" x2="150" y1="120" y2="200"></line>
+<line class="node-pulse" stroke="#E0E0E0" x1="200" x2="250" y1="120" y2="200"></line>
+</svg>
+<!-- Nodes -->
+<div class="relative w-full h-full flex items-center justify-center">
+<!-- Central Node (PRISM) -->
+<div class="absolute w-12 h-12 bg-primary rounded-full flex items-center justify-center z-10 debate-node">
+<span class="material-symbols-outlined text-white text-[20px]">psychology</span>
+<div class="node-label absolute -top-8 bg-black text-white text-[10px] px-2 py-1 whitespace-nowrap opacity-0 transition-all">Consensus Engine</div>
+</div>
+<!-- Analyst 1 -->
+<div class="absolute -translate-x-24 -translate-y-16 w-8 h-8 bg-surface border border-primary rounded-full flex items-center justify-center debate-node">
+<span class="material-symbols-outlined text-primary text-[14px]">policy</span>
+<div class="node-label absolute -top-8 bg-black text-white text-[10px] px-2 py-1 whitespace-nowrap opacity-0 transition-all">Legal Analyst (AI-L1)</div>
+</div>
+<!-- Analyst 2 -->
+<div class="absolute translate-x-24 -translate-y-16 w-8 h-8 bg-surface border border-primary rounded-full flex items-center justify-center debate-node">
+<span class="material-symbols-outlined text-primary text-[14px]">monitoring</span>
+<div class="node-label absolute -top-8 bg-black text-white text-[10px] px-2 py-1 whitespace-nowrap opacity-0 transition-all">Geopolitical Modeler</div>
+</div>
+<!-- Analyst 3 -->
+<div class="absolute -translate-x-12 translate-y-20 w-8 h-8 bg-surface border border-primary rounded-full flex items-center justify-center debate-node">
+<span class="material-symbols-outlined text-primary text-[14px]">account_balance</span>
+<div class="node-label absolute -top-8 bg-black text-white text-[10px] px-2 py-1 whitespace-nowrap opacity-0 transition-all">Economic Impact Agent</div>
+</div>
+</div>
+</div>
+<div class="mt-4 p-4 bg-surface border border-silver-grey italic text-label-sm text-on-surface-variant">
+                        "The consensus is strong, but Agent AI-L1 notes a potential conflict in Section 4.b regarding patent sovereignty."
+                    </div>
+</div>
+<!-- Bias Compass -->
+<div>
+<h3 class="text-label-md font-bold uppercase tracking-[0.2em] mb-6">Bias Compass</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 border border-silver-grey bg-white">
+<span class="text-label-sm block text-on-surface-variant mb-2">Neutrality</span>
+<div class="h-1.5 w-full bg-silver-grey rounded-full overflow-hidden">
+<div class="h-full bg-transparency-teal w-[90%]"></div>
+</div>
+</div>
+<div class="p-4 border border-silver-grey bg-white">
+<span class="text-label-sm block text-on-surface-variant mb-2">Sentimentalism</span>
+<div class="h-1.5 w-full bg-silver-grey rounded-full overflow-hidden">
+<div class="h-full bg-transparency-teal w-[15%]"></div>
+</div>
+</div>
+<div class="p-4 border border-silver-grey bg-white">
+<span class="text-label-sm block text-on-surface-variant mb-2">Authority</span>
+<div class="h-1.5 w-full bg-silver-grey rounded-full overflow-hidden">
+<div class="h-full bg-transparency-teal w-[75%]"></div>
+</div>
+</div>
+<div class="p-4 border border-silver-grey bg-white">
+<span class="text-label-sm block text-on-surface-variant mb-2">Framing</span>
+<div class="h-1.5 w-full bg-silver-grey rounded-full overflow-hidden">
+<div class="h-full bg-transparency-teal w-[40%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Footer -->
+<footer class="bg-surface border-t border-silver-grey full-width bottom-0 mt-section-gap">
+<div class="w-full py-gutter px-margin-page max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-element-gap">
+<div class="font-headline-md text-headline-md text-primary">PRISM</div>
+<div class="flex gap-8">
+<a class="font-hankenGrotesk text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">About</a>
+<a class="font-hankenGrotesk text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Methodology</a>
+<a class="font-hankenGrotesk text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy</a>
+<a class="font-hankenGrotesk text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms</a>
+</div>
+<span class="font-hankenGrotesk text-label-sm text-on-surface-variant">© 2024 PRISM Media Transparency. All rights reserved.</span>
+</div>
+</footer>
+<!-- Mobile Navigation -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-silver-grey h-16 flex items-center justify-around z-50">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">rss_feed</span>
+<span class="text-[10px] font-bold">Feed</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="text-[10px] font-bold">Saved</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">history</span>
+<span class="text-[10px] font-bold">History</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold">Settings</span>
+</button>
+</div>
+<script>
+        function toggleReasoning(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                // Trigger animation for the arc if hidden initially
+                const arc = el.querySelector('.filling-arc');
+                if (arc) {
+                    setTimeout(() => {
+                        arc.style.strokeDashoffset = '42'; // Corresponds to 85%
+                    }, 100);
+                }
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+        
+        // Grain Overlay
+        const grainOverlay = document.createElement('div');
+        grainOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        `;
+        document.body.appendChild(grainOverlay);
+    </script>
+</body></html>

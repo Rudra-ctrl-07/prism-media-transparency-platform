@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PRISM | Media Transparency Redefined</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&amp;family=Hanken+Grotesk:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .grain-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .radial-gauge {
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 251.2;
+            transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .debate-node {
+            transition: transform 0.3s ease;
+        }
+        .debate-node:hover {
+            transform: scale(1.1);
+        }
+        .pulse-line {
+            stroke-dasharray: 10;
+            animation: dash 20s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: -1000; }
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#f9f9f9",
+                        "secondary-fixed": "#93f2f2",
+                        "inverse-on-surface": "#f1f1f1",
+                        "on-tertiary": "#ffffff",
+                        "soft-white": "#F9F9F9",
+                        "inverse-primary": "#c8c6c5",
+                        "surface-dim": "#dadada",
+                        "on-secondary-fixed": "#002020",
+                        "tertiary-fixed": "#e2e2e2",
+                        "outline-variant": "#c4c7c7",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "tertiary": "#000000",
+                        "secondary-container": "#90efef",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "secondary-fixed-dim": "#76d6d5",
+                        "on-surface-variant": "#444748",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "inverse-surface": "#2f3131",
+                        "surface-container-low": "#f3f3f3",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "deep-charcoal": "#121212",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#474646",
+                        "on-primary-container": "#858383",
+                        "primary-fixed": "#e5e2e1",
+                        "surface-container": "#eeeeee",
+                        "on-primary-fixed": "#1c1b1b",
+                        "on-background": "#1a1c1c",
+                        "surface-container-high": "#e8e8e8",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-error": "#ffffff",
+                        "silver-grey": "#E0E0E0",
+                        "on-secondary-container": "#006e6e",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e2e2e2",
+                        "primary": "#000000",
+                        "background": "#f9f9f9",
+                        "secondary": "#006a6a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#838484",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "surface-tint": "#5f5e5e",
+                        "on-surface": "#1a1c1c",
+                        "surface-bright": "#f9f9f9",
+                        "tertiary-container": "#1a1c1c",
+                        "transparency-teal": "#008080",
+                        "outline": "#747878",
+                        "primary-container": "#1c1b1b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "element-gap": "1rem",
+                        "section-gap": "8rem",
+                        "gutter": "2rem",
+                        "margin-mobile": "1.5rem",
+                        "margin-page": "4rem"
+                    },
+                    "fontFamily": {
+                        "headline-display": ["EB Garamond", "serif"],
+                        "label-sm": ["Hanken Grotesk", "sans-serif"],
+                        "label-md": ["Hanken Grotesk", "sans-serif"],
+                        "headline-lg-mobile": ["EB Garamond", "serif"],
+                        "headline-lg": ["EB Garamond", "serif"],
+                        "body-lg": ["Hanken Grotesk", "sans-serif"],
+                        "body-md": ["Hanken Grotesk", "sans-serif"],
+                        "headline-md": ["EB Garamond", "serif"]
+                    },
+                    "fontSize": {
+                        "headline-display": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["28px", { "lineHeight": "1.3", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<div class="grain-overlay"></div>
+<!-- Navigation -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-silver-grey h-20 flex items-center">
+<div class="flex justify-between items-center w-full px-margin-page max-w-[1280px] mx-auto">
+<div class="flex items-center gap-4">
+<img alt="PRISM Logo" class="h-8 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwycrjJPMSNu6gzl_ZrjGx8LgGqQEaN-BoyQtIM_uDHESN2KzeZ-PLIWwaOchma3KiTc0wIHo6PthQ68ikwbDS0pPw2lEyYLTZz_EobTseMjBMiNbDxe-9fTt6hCUES2bknqUK8vFk8G8XE973bPyeYmnkN5nuWHai9rpRhTQWtseeEcJc8WUM6bUin6FVGUo4cetrCw4d2HlkdwkExnwfiw2ByBNlE9F-_dINO25YPg7egAgluGl8Ku3mvBbFkMQ3P4WDPIWk1K4"/>
+<span class="font-headline-md text-headline-md font-medium tracking-tighter text-primary">PRISM</span>
+</div>
+<div class="hidden md:flex gap-8 items-center font-label-md text-label-md">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#feed">Transparency Feed</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#debate">How it Works</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#pricing">Pricing</a>
+<button class="bg-primary text-on-primary px-6 py-2 transition-transform active:scale-95">Verify Link</button>
+</div>
+<button class="md:hidden">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</nav>
+<main class="relative">
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+
+<div class="relative z-10 w-full px-margin-page max-w-[1280px] mx-auto">
+<div class="max-w-2xl fade-in">
+<span class="inline-block px-3 py-1 mb-6 border border-primary text-label-sm font-label-sm uppercase tracking-widest">Open-Source Intelligence</span>
+<h1 class="font-headline-display text-headline-display mb-6">See the process. <br/><span class="italic font-normal">Not just the label.</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-lg">PRISM is the first media transparency platform that shows its reasoning, in motion, for free.</p>
+<div class="flex gap-4">
+<button class="bg-deep-charcoal text-soft-white px-8 py-4 text-label-md font-label-md tracking-widest uppercase transition-all hover:bg-primary/90">Verify a Link</button>
+<button class="border border-silver-grey text-primary px-8 py-4 text-label-md font-label-md tracking-widest uppercase hover:bg-surface-container transition-colors flex items-center gap-2">
+                            Our Methodology <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- The Debate (Interactive Section) -->
+<section class="py-section-gap bg-surface" id="debate">
+<div class="px-margin-page max-w-[1280px] mx-auto text-center">
+<span class="text-label-sm font-label-sm uppercase tracking-widest text-transparency-teal mb-4 block">The Core Logic</span>
+<h2 class="font-headline-lg text-headline-lg mb-4">The Debate Engine</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl mx-auto mb-20">We don't just assign a score. We simulate a multi-agent debate between distinct ideological perspectives to find the hidden center of any story.</p>
+<div class="relative max-w-4xl mx-auto aspect-[16/9] bg-surface-container-lowest border border-silver-grey rounded-lg flex items-center justify-center p-12">
+<svg class="w-full h-full" viewbox="0 0 800 450">
+<!-- Connecting Lines -->
+<path class="pulse-line" d="M150,125 Q400,125 400,225" fill="none" stroke="#E0E0E0" stroke-width="1"></path>
+<path class="pulse-line" d="M150,325 Q400,325 400,225" fill="none" stroke="#E0E0E0" stroke-width="1"></path>
+<path class="pulse-line" d="M650,225 Q400,225 400,225" fill="none" stroke="#E0E0E0" stroke-width="1"></path>
+<!-- Progressive Node -->
+<g class="debate-node cursor-pointer" transform="translate(150, 125)">
+<circle fill="#f9f9f9" r="45" stroke="#121212" stroke-width="1"></circle>
+<text dy="5" fill="#121212" font-family="Hanken Grotesk" font-size="12" font-weight="500" text-anchor="middle">PROGRESSIVE</text>
+<circle cy="-20" fill="#008080" r="4"></circle>
+</g>
+<!-- Conservative Node -->
+<g class="debate-node cursor-pointer" transform="translate(150, 325)">
+<circle fill="#f9f9f9" r="45" stroke="#121212" stroke-width="1"></circle>
+<text dy="5" fill="#121212" font-family="Hanken Grotesk" font-size="12" font-weight="500" text-anchor="middle">CONSERVATIVE</text>
+<circle cy="-20" fill="#ba1a1a" r="4"></circle>
+</g>
+<!-- Omission Node -->
+<g class="debate-node cursor-pointer" transform="translate(650, 225)">
+<circle fill="#f9f9f9" r="45" stroke="#121212" stroke-width="1"></circle>
+<text dy="5" fill="#121212" font-family="Hanken Grotesk" font-size="12" font-weight="500" text-anchor="middle">FACTUAL</text>
+<circle cy="-20" fill="#747878" r="4"></circle>
+</g>
+<!-- Moderator/Verdict Node -->
+<g transform="translate(400, 225)">
+<circle fill="#121212" r="60"></circle>
+<text dy="5" fill="#F9F9F9" font-family="EB Garamond" font-size="18" text-anchor="middle">MODERATOR</text>
+<circle class="animate-spin" fill="none" r="65" stroke="#008080" stroke-dasharray="10 5" stroke-width="2" style="animation-duration: 20s"></circle>
+</g>
+</svg>
+<div class="absolute bottom-8 left-8 right-8 flex justify-between text-left font-label-sm uppercase tracking-tighter text-on-surface-variant">
+<div class="w-1/3">Agent Alpha: Analyzing socio-economic impact focus.</div>
+<div class="w-1/3 text-center">Engine Status: Synthesizing Dialectic...</div>
+<div class="w-1/3 text-right">Agent Beta: Detecting specific word-omissions.</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Transparency Feed -->
+<section class="py-section-gap bg-surface-container-lowest" id="feed">
+<div class="px-margin-page max-w-[1280px] mx-auto">
+<div class="flex justify-between items-end mb-16">
+<div>
+<span class="text-label-sm font-label-sm uppercase tracking-widest text-on-surface-variant mb-2 block">Live Intelligence</span>
+<h2 class="font-headline-lg text-headline-lg">Transparency Feed</h2>
+</div>
+<button class="text-label-md font-label-md uppercase tracking-widest border-b border-primary pb-1">View Full Archive</button>
+</div>
+<div class="flex flex-col">
+<!-- Feed Item 1 -->
+<div class="group py-12 border-t border-silver-grey flex flex-col md:flex-row gap-12 items-start transition-colors hover:bg-surface-container-low px-4">
+<div class="flex-shrink-0">
+<div class="relative w-24 h-24">
+<svg class="w-full h-full -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="40" stroke="#E0E0E0" stroke-width="8"></circle>
+<circle class="radial-gauge" cx="50" cy="50" fill="none" r="40" stroke="#008080" stroke-dasharray="251.2" stroke-dashoffset="30" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center font-label-md text-primary">88%</div>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex gap-4 mb-4 font-label-sm text-on-surface-variant">
+<span>REUTERS</span>
+<span>•</span>
+<span>2 HOURS AGO</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4 max-w-2xl group-hover:text-transparency-teal transition-colors">Global energy markets stabilize following multilateral accord in Brussels.</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">High degree of factual density. Framing is neutral with slight optimism regarding trade stability. Reasoning: Comparative analysis of 4 global sources suggests minimal omission.</p>
+</div>
+<div class="flex-shrink-0 flex gap-2">
+<span class="px-3 py-1 bg-surface border border-silver-grey text-label-sm uppercase">Factual</span>
+<span class="px-3 py-1 bg-surface border border-silver-grey text-label-sm uppercase">Verified</span>
+</div>
+</div>
+<!-- Feed Item 2 -->
+<div class="group py-12 border-t border-silver-grey flex flex-col md:flex-row gap-12 items-start transition-colors hover:bg-surface-container-low px-4">
+<div class="flex-shrink-0">
+<div class="relative w-24 h-24">
+<svg class="w-full h-full -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="40" stroke="#E0E0E0" stroke-width="8"></circle>
+<circle class="radial-gauge" cx="50" cy="50" fill="none" r="40" stroke="#ba1a1a" stroke-dasharray="251.2" stroke-dashoffset="180" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center font-label-md text-primary">32%</div>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex gap-4 mb-4 font-label-sm text-on-surface-variant">
+<span>UNKNOWN OUTLET</span>
+<span>•</span>
+<span>5 HOURS AGO</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4 max-w-2xl group-hover:text-error transition-colors">Newly discovered document 'proves' systematic suppression of fringe research.</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">Significant emotional loading and context omission detected. Reasoning: Agent debate concluded the source lacks cross-verification on primary claims.</p>
+</div>
+<div class="flex-shrink-0 flex gap-2">
+<span class="px-3 py-1 bg-error-container text-on-error-container text-label-sm uppercase">Emotional Bias</span>
+</div>
+</div>
+<!-- Feed Item 3 -->
+<div class="group py-12 border-t border-b border-silver-grey flex flex-col md:flex-row gap-12 items-start transition-colors hover:bg-surface-container-low px-4">
+<div class="flex-shrink-0">
+<div class="relative w-24 h-24">
+<svg class="w-full h-full -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="40" stroke="#E0E0E0" stroke-width="8"></circle>
+<circle class="radial-gauge" cx="50" cy="50" fill="none" r="40" stroke="#5f5e5e" stroke-dasharray="251.2" stroke-dashoffset="90" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center font-label-md text-primary">64%</div>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex gap-4 mb-4 font-label-sm text-on-surface-variant">
+<span>THE INDEPENDENT</span>
+<span>•</span>
+<span>8 HOURS AGO</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4 max-w-2xl group-hover:text-primary transition-colors">Urban infrastructure bill faces fresh scrutiny over environmental impact clauses.</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">Neutral tone but significant 'omission-focused' framing. Key details on economic benefits are secondary to environmental risk narrative.</p>
+</div>
+<div class="flex-shrink-0 flex gap-2">
+<span class="px-3 py-1 bg-surface border border-silver-grey text-label-sm uppercase">Framing Bias</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bias Compass Section -->
+<section class="py-section-gap bg-surface">
+<div class="px-margin-page max-w-[1280px] mx-auto grid md:grid-cols-2 gap-20 items-center">
+<div>
+<span class="text-label-sm font-label-sm uppercase tracking-widest text-transparency-teal mb-4 block">Multivariate Analysis</span>
+<h2 class="font-headline-lg text-headline-lg mb-6">The Bias Compass</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">Binary left-right sliders are obsolete. PRISM maps media on a three-axis radial coordinate system to expose how you're being influenced.</p>
+<ul class="space-y-6">
+<li class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-secondary-container text-sm">visibility</span>
+</div>
+<div>
+<h4 class="font-label-md uppercase mb-1">Framing</h4>
+<p class="text-on-surface-variant">Which perspective is favored in the narrative structure?</p>
+</div>
+</li>
+<li class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-error-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-error-container text-sm">favorite</span>
+</div>
+<div>
+<h4 class="font-label-md uppercase mb-1">Emotion</h4>
+<p class="text-on-surface-variant">The intensity of inflammatory vs. analytical language.</p>
+</div>
+</li>
+<li class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">inventory_2</span>
+</div>
+<div>
+<h4 class="font-label-md uppercase mb-1">Omission</h4>
+<p class="text-on-surface-variant">Identifying critical facts left out of the reporting.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="relative aspect-square flex items-center justify-center">
+<!-- Geometric Compass UI -->
+<div class="absolute inset-0 border-[0.5px] border-silver-grey rounded-full"></div>
+<div class="absolute inset-[15%] border-[0.5px] border-silver-grey rounded-full"></div>
+<div class="absolute inset-[30%] border-[0.5px] border-silver-grey rounded-full"></div>
+<!-- Axis Lines -->
+<div class="absolute w-[100%] h-[0.5px] bg-silver-grey rotate-90"></div>
+<div class="absolute w-[100%] h-[0.5px] bg-silver-grey rotate-[30deg]"></div>
+<div class="absolute w-[100%] h-[0.5px] bg-silver-grey rotate-[150deg]"></div>
+<!-- Labels -->
+<div class="absolute top-0 -translate-y-8 font-label-sm uppercase tracking-widest">Emotion</div>
+<div class="absolute bottom-0 translate-y-8 font-label-sm uppercase tracking-widest">Omission</div>
+<div class="absolute right-0 translate-x-12 font-label-sm uppercase tracking-widest">Framing</div>
+<!-- Data Point Visualization -->
+<div class="relative w-full h-full p-20">
+<svg class="w-full h-full drop-shadow-xl" viewbox="0 0 200 200">
+<polygon class="animate-pulse" fill="rgba(0, 128, 128, 0.2)" points="100,40 140,130 70,145" stroke="#008080" stroke-width="2"></polygon>
+<circle cx="100" cy="40" fill="#008080" r="4"></circle>
+<circle cx="140" cy="130" fill="#008080" r="4"></circle>
+<circle cx="70" cy="145" fill="#008080" r="4"></circle>
+</svg>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing Section -->
+<section class="py-section-gap border-t border-silver-grey" id="pricing">
+<div class="px-margin-page max-w-[1280px] mx-auto">
+<div class="text-center mb-20">
+<h2 class="font-headline-lg text-headline-lg mb-4">Transparent Pricing</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Access the tools of the future, today.</p>
+</div>
+<div class="grid md:grid-cols-2 gap-px bg-silver-grey border border-silver-grey">
+<!-- Free Plan -->
+<div class="bg-surface p-12 flex flex-col h-full">
+<span class="font-label-sm uppercase tracking-widest text-on-surface-variant mb-4">Community Access</span>
+<h3 class="font-headline-md text-headline-md mb-2">Standard</h3>
+<div class="text-4xl font-headline-display mb-8">$0<span class="text-lg font-body-md text-on-surface-variant">/mo</span></div>
+<ul class="space-y-4 mb-12 flex-grow">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-transparency-teal">check</span>
+<span class="text-body-md">ML Transparency Score</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-transparency-teal">check</span>
+<span class="text-body-md">Original Source Links</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-transparency-teal">check</span>
+<span class="text-body-md">Basic Reasoning Summaries</span>
+</li>
+<li class="flex items-center gap-3 opacity-30">
+<span class="material-symbols-outlined">block</span>
+<span class="text-body-md">Unlimited Deep Verifications</span>
+</li>
+</ul>
+<button class="w-full py-4 border border-deep-charcoal font-label-md uppercase tracking-widest hover:bg-surface-container transition-colors">Get Started</button>
+</div>
+<!-- Pro Plan -->
+<div class="bg-deep-charcoal text-soft-white p-12 flex flex-col h-full relative overflow-hidden">
+<div class="absolute top-8 right-8 px-3 py-1 bg-transparency-teal text-soft-white text-xs uppercase tracking-tighter">Recommended</div>
+<span class="font-label-sm uppercase tracking-widest text-on-primary-container mb-4">Professional Intelligence</span>
+<h3 class="font-headline-md text-headline-md mb-2">Analyst Pro</h3>
+<div class="text-4xl font-headline-display mb-8">$19<span class="text-lg font-body-md text-on-primary-container">/mo</span></div>
+<ul class="space-y-4 mb-12 flex-grow">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-transparency-teal">check</span>
+<span class="text-body-md">Everything in Standard</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-transparency-teal">check</span>
+<span class="text-body-md">Unlimited Deep Verifications</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-transparency-teal">check</span>
+<span class="text-body-md">Priority Debate Engine Access</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-transparency-teal">check</span>
+<span class="text-body-md">API Access (Beta)</span>
+</li>
+</ul>
+<button class="w-full py-4 bg-soft-white text-deep-charcoal font-label-md uppercase tracking-widest hover:bg-secondary-fixed transition-colors">Go Pro</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="border-t border-silver-grey bg-surface">
+<div class="w-full py-gutter px-margin-page max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-element-gap">
+<div class="flex items-center gap-4">
+<img alt="PRISM Logo" class="h-6 opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwycrjJPMSNu6gzl_ZrjGx8LgGqQEaN-BoyQtIM_uDHESN2KzeZ-PLIWwaOchma3KiTc0wIHo6PthQ68ikwbDS0pPw2lEyYLTZz_EobTseMjBMiNbDxe-9fTt6hCUES2bknqUK8vFk8G8XE973bPyeYmnkN5nuWHai9rpRhTQWtseeEcJc8WUM6bUin6FVGUo4cetrCw4d2HlkdwkExnwfiw2ByBNlE9F-_dINO25YPg7egAgluGl8Ku3mvBbFkMQ3P4WDPIWk1K4"/>
+<span class="font-headline-md text-headline-md text-primary opacity-80">PRISM</span>
+</div>
+<div class="flex gap-8 font-label-sm text-label-sm text-on-surface-variant">
+<a class="hover:text-secondary transition-colors" href="#">About</a>
+<a class="hover:text-secondary transition-colors" href="#">Methodology</a>
+<a class="hover:text-secondary transition-colors" href="#">Privacy</a>
+<a class="hover:text-secondary transition-colors" href="#">Terms</a>
+<a class="hover:text-secondary transition-colors" href="#">Contact</a>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-60">© 2024 PRISM Media Transparency. All rights reserved.</p>
+</div>
+</footer>
+<script>
+        // Simple intersection observer for the gauges
+        const observerOptions = {
+            threshold: 0.2
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const gauges = entry.target.querySelectorAll('.radial-gauge');
+                    gauges.forEach(gauge => {
+                        const offset = gauge.getAttribute('stroke-dashoffset');
+                        gauge.style.strokeDashoffset = offset;
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('#feed .group').forEach(group => observer.observe(group));
+
+        // Hover interactions for debate nodes
+        document.querySelectorAll('.debate-node').forEach(node => {
+            node.addEventListener('mouseenter', () => {
+                const moderator = document.querySelector('circle[stroke="#008080"]');
+                moderator.style.animationDuration = '5s';
+            });
+            node.addEventListener('mouseleave', () => {
+                const moderator = document.querySelector('circle[stroke="#008080"]');
+                moderator.style.animationDuration = '20s';
+            });
+        });
+    </script>
+</body></html>

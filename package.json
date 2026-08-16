@@ -1,0 +1,49 @@
+{
+  "name": "prism-frontend",
+  "version": "1.0.0",
+  "description": "PRISM - Media transparency platform (unified merge of New_Prizm + Prizm_Large + prism + Conway Automaton integration)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "npx vitest run",
+    "lint": "tsc --noEmit",
+    "automaton:up": "bash scripts/bootstrap-automaton.sh",
+    "automaton:down": "bash scripts/stop-automaton.sh",
+    "automaton:status": "curl -s http://localhost:${AUTOMATON_PORT:-7777}/status || echo \"Automaton runtime not reachable\"",
+    "loop:up": "bash scripts/loop-up.sh",
+    "loop:down": "bash scripts/loop-down.sh",
+    "loop:status": "bash scripts/loop-status.sh",
+    "loop:once": "npm --prefix api run loop:once"
+  },
+  "dependencies": {
+    "@google/genai": "^2.4.0",
+    "@huggingface/transformers": "^4.2.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "d3": "^7.9.0",
+    "firebase": "^12.16.0",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.546.0",
+    "motion": "^12.23.24",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-globe.gl": "^2.38.0",
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^6.30.4",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "@types/leaflet": "^1.9.8",
+    "@types/node": "^22.14.0",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.8.2",
+    "vite": "^5.1.4",
+    "vitest": "^4.1.10"
+  }
+}

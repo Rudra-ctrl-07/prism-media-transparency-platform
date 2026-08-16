@@ -1,0 +1,41 @@
+{
+  "name": "prism-backend",
+  "version": "1.0.0",
+  "description": "Backend for PRISM media transparency platform — unified merge with modular Gemini + Conway Automaton integration",
+  "main": "dist/server.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "ingest": "ts-node src/services/ingestion.ts",
+    "agent:run": "ts-node src/cron/agentJob.ts",
+    "loop:start": "ts-node src/loop/cli.ts",
+    "loop:once": "ts-node src/loop/cli.ts --once",
+    "loop:status": "ts-node src/loop/cli.ts status",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@google/genai": "^2.4.0",
+    "@huggingface/transformers": "^4.2.0",
+    "@upstash/redis": "^1.25.1",
+    "axios": "^1.6.7",
+    "compromise": "^14.16.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.21.2",
+    "firebase-admin": "^13.10.0",
+    "helmet": "^7.1.0",
+    "node-html-parser": "^9.0.0",
+    "openai": "^4.0.0",
+    "rss-parser": "^3.13.0",
+    "stripe": "^14.18.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.14.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.2",
+    "vitest": "^4.1.10"
+  }
+}

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PRISM | Transparent Pricing</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&amp;family=Hanken+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#006a6a",
+                        "surface-dim": "#dadada",
+                        "primary": "#000000",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#474646",
+                        "surface-tint": "#5f5e5e",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface-variant": "#e2e2e2",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "on-secondary-container": "#006e6e",
+                        "on-error": "#ffffff",
+                        "transparency-teal": "#008080",
+                        "on-tertiary-container": "#838484",
+                        "on-surface": "#1a1c1c",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#1c1b1b",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f3f3f3",
+                        "background": "#f9f9f9",
+                        "silver-grey": "#E0E0E0",
+                        "error": "#ba1a1a",
+                        "surface-container": "#eeeeee",
+                        "on-secondary-fixed": "#002020",
+                        "primary-fixed": "#e5e2e1",
+                        "tertiary-container": "#1a1c1c",
+                        "on-background": "#1a1c1c",
+                        "inverse-primary": "#c8c6c5",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-surface-variant": "#444748",
+                        "secondary-fixed": "#93f2f2",
+                        "soft-white": "#F9F9F9",
+                        "inverse-surface": "#2f3131",
+                        "tertiary": "#000000",
+                        "outline-variant": "#c4c7c7",
+                        "surface": "#f9f9f9",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#1c1b1b",
+                        "inverse-on-surface": "#f1f1f1",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "on-primary-container": "#858383",
+                        "surface-bright": "#f9f9f9",
+                        "outline": "#747878",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "deep-charcoal": "#121212",
+                        "secondary-fixed-dim": "#76d6d5",
+                        "surface-container-high": "#e8e8e8",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#90efef"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "8rem",
+                        "element-gap": "1rem",
+                        "margin-page": "4rem",
+                        "margin-mobile": "1.5rem",
+                        "gutter": "2rem"
+                    },
+                    "fontFamily": {
+                        "ebGaramond": ["EB Garamond", "serif"],
+                        "hankenGrotesk": ["Hanken Grotesk", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "headline-display": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["28px", { "lineHeight": "1.3", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #f9f9f9;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 150px 150px;
+            opacity: 0.98;
+        }
+
+        .hairline-divider {
+            height: 1px;
+            background-color: #E0E0E0;
+            width: 100%;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .hover-lift {
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        .hover-lift:hover {
+            background-color: #eeeeee;
+        }
+
+        .comparison-table td {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        .comparison-table th {
+            padding: 2rem 1rem;
+            text-align: left;
+            border-bottom: 2px solid #121212;
+        }
+    </style>
+</head>
+<body class="font-hankenGrotesk text-on-surface">
+<!-- Top Navigation Bar -->
+<header class="bg-surface border-b border-silver-grey fixed top-0 w-full z-50">
+<div class="flex justify-between items-center w-full px-margin-page max-w-[1280px] mx-auto h-20">
+<div class="font-ebGaramond text-headline-md font-medium tracking-tighter text-primary">PRISM</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-hankenGrotesk text-label-md text-on-surface-variant hover:text-primary transition-opacity" href="#">Transparency Feed</a>
+<a class="font-hankenGrotesk text-label-md text-on-surface-variant hover:text-primary transition-opacity" href="#">How it Works</a>
+<a class="font-hankenGrotesk text-label-md text-primary border-b border-primary pb-1" href="#">Pricing</a>
+</nav>
+<button class="bg-deep-charcoal text-on-primary px-6 py-2 font-hankenGrotesk text-label-md active:scale-95 transition-transform">
+                Verify Link
+            </button>
+</div>
+</header>
+<main class="pt-32 pb-section-gap px-margin-page max-w-[1280px] mx-auto">
+<!-- Hero Header -->
+<section class="mb-20 text-center md:text-left max-w-4xl">
+<span class="font-hankenGrotesk text-label-sm uppercase tracking-widest text-on-surface-variant mb-4 block">Institutional Grade Intelligence</span>
+<h1 class="font-ebGaramond text-headline-display mb-6">Transparent Pricing. Access the tools of the future, today.</h1>
+<p class="font-hankenGrotesk text-body-lg text-on-surface-variant max-w-2xl">We believe transparency shouldn't be a luxury. Choose the tier that matches your commitment to objective truth.</p>
+</section>
+<!-- Pricing Cards -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-section-gap">
+<!-- Community Access (Free) -->
+<div class="border border-silver-grey p-10 flex flex-col justify-between h-full bg-white/50 backdrop-blur-sm">
+<div>
+<div class="flex justify-between items-start mb-12">
+<div>
+<h2 class="font-ebGaramond text-headline-lg mb-2">Community Access</h2>
+<p class="font-hankenGrotesk text-label-md text-on-surface-variant">FOR THE CURIOUS INDIVIDUAL</p>
+</div>
+<div class="text-right">
+<span class="font-ebGaramond text-headline-lg font-medium">$0</span>
+<span class="block font-hankenGrotesk text-label-sm text-on-surface-variant">Forever free</span>
+</div>
+</div>
+<div class="space-y-6 mb-12">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-transparency-teal">check_circle</span>
+<div>
+<p class="font-hankenGrotesk text-body-md font-medium">ML Transparency Score</p>
+<p class="font-hankenGrotesk text-label-sm text-on-surface-variant">High-level credibility metrics for any article URL.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-transparency-teal">check_circle</span>
+<div>
+<p class="font-hankenGrotesk text-body-md font-medium">Original Source Links</p>
+<p class="font-hankenGrotesk text-label-sm text-on-surface-variant">Direct access to the primary data supporting a claim.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-transparency-teal">check_circle</span>
+<div>
+<p class="font-hankenGrotesk text-body-md font-medium">Basic Reasoning</p>
+<p class="font-hankenGrotesk text-label-sm text-on-surface-variant">A summary of the algorithmic logic behind the score.</p>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full border border-deep-charcoal py-4 font-hankenGrotesk text-label-md uppercase tracking-widest hover:bg-deep-charcoal hover:text-white transition-colors">
+                    Start Verifying
+                </button>
+</div>
+<!-- Analyst Pro (Paid) -->
+<div class="border border-deep-charcoal p-10 flex flex-col justify-between h-full bg-deep-charcoal text-white relative overflow-hidden">
+<!-- Subtle graphic background -->
+<div class="absolute top-0 right-0 p-8 opacity-10">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 0, 'wght' 100;">analytics</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-12 relative z-10">
+<div>
+<h2 class="font-ebGaramond text-headline-lg mb-2">Analyst Pro</h2>
+<p class="font-hankenGrotesk text-label-md text-tertiary-fixed-dim">FOR PROFESSIONAL TRUTH-SEEKERS</p>
+</div>
+<div class="text-right">
+<span class="font-ebGaramond text-headline-lg font-medium">$19</span>
+<span class="block font-hankenGrotesk text-label-sm text-tertiary-fixed-dim">per month</span>
+</div>
+</div>
+<div class="space-y-6 mb-12 relative z-10">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-transparency-teal">verified</span>
+<div>
+<p class="font-hankenGrotesk text-body-md font-medium">Unlimited Deep Verifications</p>
+<p class="font-hankenGrotesk text-label-sm text-tertiary-fixed-dim">Exhaustive multi-agent analysis with no daily limits.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-transparency-teal">verified</span>
+<div>
+<p class="font-hankenGrotesk text-body-md font-medium">Priority Debate Engine Access</p>
+<p class="font-hankenGrotesk text-label-sm text-tertiary-fixed-dim">Interactive visualization of conflicting expert models.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-transparency-teal">verified</span>
+<div>
+<p class="font-hankenGrotesk text-body-md font-medium">API Access</p>
+<p class="font-hankenGrotesk text-label-sm text-tertiary-fixed-dim">Integrate PRISM intelligence into your own research workflow.</p>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full bg-white text-deep-charcoal py-4 font-hankenGrotesk text-label-md uppercase tracking-widest hover:bg-transparency-teal hover:text-white transition-colors relative z-10">
+                    Get Analyst Pro
+                </button>
+</div>
+</section>
+<!-- Detailed Comparison Table -->
+<section class="max-w-5xl mx-auto">
+<div class="text-center mb-12">
+<h3 class="font-ebGaramond text-headline-md mb-2">Feature Comparison</h3>
+<p class="font-hankenGrotesk text-body-md text-on-surface-variant">Full transparency on what you get.</p>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full comparison-table font-hankenGrotesk">
+<thead>
+<tr>
+<th class="font-ebGaramond text-headline-md w-1/2">Capability</th>
+<th class="font-hankenGrotesk text-label-md uppercase tracking-widest text-on-surface-variant">Community</th>
+<th class="font-hankenGrotesk text-label-md uppercase tracking-widest text-primary">Pro</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="font-medium">Verification Speed</td>
+<td class="text-on-surface-variant">Standard</td>
+<td class="font-semibold">Instant (Priority)</td>
+</tr>
+<tr>
+<td class="font-medium">Bias Detection Intensity</td>
+<td class="text-on-surface-variant">Surface Level</td>
+<td class="font-semibold">Deep Archetypal</td>
+</tr>
+<tr>
+<td class="font-medium">Multi-Agent Debate Nodes</td>
+<td class="text-on-surface-variant">3 Nodes</td>
+<td class="font-semibold">Up to 12 Nodes</td>
+</tr>
+<tr>
+<td class="font-medium">Historical Audit Log</td>
+<td class="text-on-surface-variant">7 Days</td>
+<td class="font-semibold">Infinite</td>
+</tr>
+<tr>
+<td class="font-medium">Export Formats</td>
+<td class="text-on-surface-variant">Plain Text</td>
+<td class="font-semibold">PDF, JSON, CSV</td>
+</tr>
+<tr>
+<td class="font-medium">Custom Modeling</td>
+<td class="text-on-surface-variant">—</td>
+<td class="font-semibold">Beta Access</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Integrity Clause -->
+<section class="mt-section-gap border-t border-silver-grey pt-12 flex flex-col md:flex-row gap-12 items-center">
+<div class="w-24 h-24 flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A macro photograph of a high-quality glass prism sitting on a minimalist white surface, refracting a subtle rainbow against a textured light-grey wall. The lighting is crisp and editorial, highlighting the sharp edges and absolute clarity of the glass. The aesthetic is clean, intellectual, and high-end." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBk8GSMbH8DLxE2G9NHO3ZP2YN4mq__fOn7AQbWr4XCN-DYk1f9hc186i4zyFQBkokKaCxaaozDGiUAooZnrKSkEzCekeU7SJls-bNnz_Gwj7GSlzGOlIgMLYwVewH3HeYcY4xAFOu_6EjXP3D5EY0Qkeobf07OoWos0xQvOLqL7282S5H1hjTtIRhF9ZSwR65d83cexNyIKC7oyr9GGrOms9ESEJKAi9MhxHcDjiQEjvvuBAiTwl2YQSpc0fobqBlYShmMHMvTAHo"/>
+</div>
+<div>
+<h4 class="font-ebGaramond text-headline-md mb-2">The 'No Paywall Frustration' Pledge</h4>
+<p class="font-hankenGrotesk text-body-md text-on-surface-variant">At PRISM, truth isn't behind a paywall. Our essential verification tools will always remain free. Our paid tiers fund the massive computational power required for deep multi-agent cross-referencing and architectural bias modeling. We don't sell your data; we sell the labor of discovery.</p>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface border-t border-silver-grey">
+<div class="w-full py-gutter px-margin-page max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-element-gap">
+<div class="font-ebGaramond text-headline-md text-primary">PRISM</div>
+<div class="flex gap-8">
+<a class="font-hankenGrotesk text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">About</a>
+<a class="font-hankenGrotesk text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Methodology</a>
+<a class="font-hankenGrotesk text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy</a>
+<a class="font-hankenGrotesk text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms</a>
+<a class="font-hankenGrotesk text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Contact</a>
+</div>
+<div class="font-hankenGrotesk text-label-sm text-on-surface-variant">
+                © 2024 PRISM Media Transparency. All rights reserved.
+            </div>
+</div>
+</footer>
+<!-- Interactive Atmospheric Element: Subtle Grid Pulse -->
+<div class="fixed inset-0 pointer-events-none z-[-1] opacity-20" id="grid-effect"></div>
+<script>
+        // Simple micro-interaction for table rows
+        document.querySelectorAll('.comparison-table tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.backgroundColor = '#f3f3f3';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Background atmosphere: Subtle mouse tracking grain movement
+        const gridEffect = document.getElementById('grid-effect');
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            gridEffect.style.background = `radial-gradient(circle at ${x * 100}% ${y * 100}%, rgba(0, 128, 128, 0.05) 0%, transparent 50%)`;
+        });
+    </script>
+</body></html>

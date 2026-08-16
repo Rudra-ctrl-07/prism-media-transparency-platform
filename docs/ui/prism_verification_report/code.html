@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PRISM | Deep-dive Verification Report</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&amp;family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#006a6a",
+                        "surface-dim": "#dadada",
+                        "primary": "#000000",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#474646",
+                        "surface-tint": "#5f5e5e",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface-variant": "#e2e2e2",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "on-secondary-container": "#006e6e",
+                        "on-error": "#ffffff",
+                        "transparency-teal": "#008080",
+                        "on-tertiary-container": "#838484",
+                        "on-surface": "#1a1c1c",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#1c1b1b",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f3f3f3",
+                        "background": "#f9f9f9",
+                        "silver-grey": "#E0E0E0",
+                        "error": "#ba1a1a",
+                        "surface-container": "#eeeeee",
+                        "on-secondary-fixed": "#002020",
+                        "primary-fixed": "#e5e2e1",
+                        "tertiary-container": "#1a1c1c",
+                        "on-background": "#1a1c1c",
+                        "inverse-primary": "#c8c6c5",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-surface-variant": "#444748",
+                        "secondary-fixed": "#93f2f2",
+                        "soft-white": "#F9F9F9",
+                        "inverse-surface": "#2f3131",
+                        "tertiary": "#000000",
+                        "outline-variant": "#c4c7c7",
+                        "surface": "#f9f9f9",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#1c1b1b",
+                        "inverse-on-surface": "#f1f1f1",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "on-primary-container": "#858383",
+                        "surface-bright": "#f9f9f9",
+                        "outline": "#747878",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "deep-charcoal": "#121212",
+                        "secondary-fixed-dim": "#76d6d5",
+                        "surface-container-high": "#e8e8e8",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#90efef"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "8rem",
+                        "element-gap": "1rem",
+                        "margin-page": "4rem",
+                        "margin-mobile": "1.5rem",
+                        "gutter": "2rem"
+                    },
+                    "fontFamily": {
+                        "hankenGrotesk": ["Hanken Grotesk", "sans-serif"],
+                        "ebGaramond": ["EB Garamond", "serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .grain-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("https://www.transparenttextures.com/patterns/pinstripe-light.png");
+        }
+        .arc-animation {
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 251.2;
+            transition: stroke-dashoffset 2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .line-pulse {
+            stroke-dasharray: 5;
+            animation: dash 10s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: -100; }
+        }
+        .node-pulse {
+            animation: pulse-ring 3s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.2; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-hankenGrotesk selection:bg-transparency-teal selection:text-white overflow-x-hidden">
+<div class="grain-overlay"></div>
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-silver-grey sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-page max-w-[1280px] mx-auto h-20">
+<div class="font-ebGaramond text-[28px] font-medium tracking-tighter text-primary">PRISM</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="font-hankenGrotesk text-[14px] font-semibold tracking-[0.05em] text-on-surface-variant hover:text-primary transition-opacity" href="#">Transparency Feed</a>
+<a class="font-hankenGrotesk text-[14px] font-semibold tracking-[0.05em] text-on-surface-variant hover:text-primary transition-opacity" href="#">How it Works</a>
+<a class="font-hankenGrotesk text-[14px] font-semibold tracking-[0.05em] text-on-surface-variant hover:text-primary transition-opacity" href="#">Pricing</a>
+<button class="bg-deep-charcoal text-on-primary px-6 py-2 text-[14px] font-semibold tracking-[0.05em] hover:opacity-90 active:scale-95 transition-all">Verify Link</button>
+</nav>
+<button class="md:hidden material-symbols-outlined">menu</button>
+</div>
+</header>
+<main class="max-w-[1280px] mx-auto px-margin-page pt-12 pb-section-gap">
+<!-- Hero Header -->
+<section class="mb-16 border-b border-silver-grey pb-12">
+<div class="flex flex-col md:flex-row justify-between items-end gap-8">
+<div class="max-w-2xl">
+<span class="font-hankenGrotesk text-[12px] font-medium uppercase tracking-[0.02em] text-transparency-teal mb-4 block">Report #8821 — Verification Complete</span>
+<h1 class="font-ebGaramond text-[40px] leading-[1.2] font-medium text-primary mb-4">The Global Lithium Supply Chain Paradox: Geopolitical Tensions and the Green Transition</h1>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="font-hankenGrotesk text-[14px]">Source: <strong>The Atlantic Chronicle</strong></span>
+<span class="w-1 h-1 bg-silver-grey rounded-full"></span>
+<span class="font-hankenGrotesk text-[14px]">Published: Oct 24, 2024</span>
+</div>
+</div>
+<!-- Filling Arc Score -->
+<div class="relative flex flex-col items-center">
+<div class="relative w-32 h-32">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container" cx="64" cy="64" fill="transparent" r="56" stroke="currentColor" stroke-width="2"></circle>
+<circle class="text-transparency-teal arc-animation" cx="64" cy="64" fill="transparent" id="score-arc" r="56" stroke="currentColor" stroke-dasharray="351.8" stroke-dashoffset="351.8" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-ebGaramond text-[32px] font-semibold">88%</span>
+<span class="font-hankenGrotesk text-[10px] uppercase tracking-wider font-bold">Verified</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Layout: Debate Engine & Sidebar -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+<!-- Left: Debate Engine (8 Columns) -->
+<div class="lg:col-span-8">
+<div class="mb-8 flex justify-between items-center">
+<h2 class="font-ebGaramond text-[28px] font-medium text-primary">Multi-Agent Debate Engine</h2>
+<div class="flex items-center gap-2 text-on-surface-variant font-hankenGrotesk text-[12px]">
+<span class="material-symbols-outlined text-[16px]">sync</span>
+                        Live Neural Synthesis
+                    </div>
+</div>
+<div class="bg-surface border border-silver-grey p-8 relative overflow-hidden">
+<!-- Debate Visualization Container -->
+<div class="relative h-[500px] w-full flex items-center justify-center mb-12">
+<!-- Connecting Lines -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none">
+<path d="M 400 100 L 200 350 L 600 350 Z" fill="transparent" stroke="#E0E0E0" stroke-width="1"></path>
+<circle class="node-pulse" cx="400" cy="100" fill="none" r="120" stroke="#008080" stroke-opacity="0.1"></circle>
+<circle class="node-pulse" cx="200" cy="350" fill="none" r="100" stroke="#008080" stroke-opacity="0.1"></circle>
+<circle class="node-pulse" cx="600" cy="350" fill="none" r="100" stroke="#008080" stroke-opacity="0.1"></circle>
+</svg>
+<!-- Agent Nodes -->
+<!-- Progressive Agent -->
+<div class="absolute top-[50px] left-1/2 -translate-x-1/2 group cursor-pointer">
+<div class="w-24 h-24 rounded-full border border-transparency-teal bg-white flex items-center justify-center transition-all group-hover:scale-110 shadow-sm z-10 relative">
+<span class="material-symbols-outlined text-transparency-teal">eco</span>
+</div>
+<div class="absolute -bottom-10 left-1/2 -translate-x-1/2 text-center whitespace-nowrap">
+<span class="font-hankenGrotesk text-[12px] font-bold uppercase tracking-widest text-primary">Progressive Node</span>
+<div class="text-[10px] text-on-surface-variant">Focus: Systemic Equality</div>
+</div>
+</div>
+<!-- Conservative Agent -->
+<div class="absolute bottom-[100px] left-[100px] group cursor-pointer">
+<div class="w-20 h-20 rounded-full border border-silver-grey bg-white flex items-center justify-center transition-all group-hover:scale-110 shadow-sm z-10 relative">
+<span class="material-symbols-outlined text-on-surface-variant">account_balance</span>
+</div>
+<div class="absolute -bottom-10 left-1/2 -translate-x-1/2 text-center whitespace-nowrap">
+<span class="font-hankenGrotesk text-[12px] font-bold uppercase tracking-widest text-primary">Conservative Node</span>
+<div class="text-[10px] text-on-surface-variant">Focus: Market Stability</div>
+</div>
+</div>
+<!-- Omission / Gap Agent -->
+<div class="absolute bottom-[100px] right-[100px] group cursor-pointer">
+<div class="w-20 h-20 rounded-full border border-silver-grey bg-white flex items-center justify-center transition-all group-hover:scale-110 shadow-sm z-10 relative">
+<span class="material-symbols-outlined text-on-surface-variant">visibility_off</span>
+</div>
+<div class="absolute -bottom-10 left-1/2 -translate-x-1/2 text-center whitespace-nowrap">
+<span class="font-hankenGrotesk text-[12px] font-bold uppercase tracking-widest text-primary">Omission Analyst</span>
+<div class="text-[10px] text-on-surface-variant">Focus: Missing Data</div>
+</div>
+</div>
+</div>
+<!-- The Dialogue Feed -->
+<div class="space-y-6 max-w-3xl mx-auto border-t border-silver-grey pt-8">
+<div class="flex gap-4">
+<div class="w-1 bg-transparency-teal"></div>
+<div>
+<p class="font-ebGaramond text-[20px] italic text-primary leading-relaxed">
+                                    "The author correctly identifies labor exploitation in the Cobalt mines, but fails to contextualize this within the historical framework of resource extraction in the Global South."
+                                </p>
+<span class="font-hankenGrotesk text-[11px] font-bold uppercase text-transparency-teal mt-2 block">Progressive Node</span>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-1 bg-silver-grey"></div>
+<div>
+<p class="font-ebGaramond text-[20px] italic text-on-surface-variant leading-relaxed">
+                                    "Counter-point: The article overstates the immediate risk to energy independence, ignoring the current 12% increase in domestic processing capacity slated for Q4."
+                                </p>
+<span class="font-hankenGrotesk text-[11px] font-bold uppercase text-on-surface-variant mt-2 block">Conservative Node</span>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-1 bg-error"></div>
+<div>
+<p class="font-ebGaramond text-[20px] italic text-on-surface-variant leading-relaxed">
+                                    "Significant data omission detected: There is no mention of the 2023 Chilean water treaty which directly impacts the lithium evaporation ponds discussed in paragraph six."
+                                </p>
+<span class="font-hankenGrotesk text-[11px] font-bold uppercase text-error mt-2 block">Omission Analyst</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: Metrics (4 Columns) -->
+<div class="lg:col-span-4 space-y-12">
+<!-- Bias Compass -->
+<div class="bg-surface border border-silver-grey p-6">
+<h3 class="font-hankenGrotesk text-[12px] font-bold uppercase tracking-widest text-primary mb-8 border-b border-silver-grey pb-4">Bias Compass</h3>
+<div class="relative w-full aspect-square flex items-center justify-center">
+<!-- Radar Chart Placeholder (Styled SVG) -->
+<svg class="w-full h-full opacity-30 absolute inset-0" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#E0E0E0" stroke-width="0.5"></circle>
+<circle cx="50" cy="50" fill="none" r="30" stroke="#E0E0E0" stroke-width="0.5"></circle>
+<circle cx="50" cy="50" fill="none" r="15" stroke="#E0E0E0" stroke-width="0.5"></circle>
+<line stroke="#E0E0E0" stroke-width="0.5" x1="50" x2="50" y1="5" y2="95"></line>
+<line stroke="#E0E0E0" stroke-width="0.5" x1="5" x2="95" y1="50" y2="50"></line>
+</svg>
+<svg class="w-full h-full relative z-10" viewbox="0 0 100 100">
+<polygon fill="#008080" fill-opacity="0.4" points="50,20 80,45 60,80 30,70 20,40" stroke="#008080" stroke-width="1.5"></polygon>
+</svg>
+<div class="absolute top-0 left-1/2 -translate-x-1/2 font-hankenGrotesk text-[10px] uppercase font-bold tracking-tighter">Liberal</div>
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 font-hankenGrotesk text-[10px] uppercase font-bold tracking-tighter">Conservative</div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 -rotate-90 font-hankenGrotesk text-[10px] uppercase font-bold tracking-tighter">Emotional</div>
+<div class="absolute right-0 top-1/2 -translate-y-1/2 rotate-90 font-hankenGrotesk text-[10px] uppercase font-bold tracking-tighter">Factual</div>
+</div>
+<p class="text-[12px] text-on-surface-variant mt-6 leading-relaxed">
+                        Source skews slightly <strong>Factual-Liberal</strong> with a heavy emphasis on Environmental Sustainability metrics.
+                    </p>
+</div>
+<!-- Source Ownership -->
+<div class="bg-surface border border-silver-grey p-6">
+<h3 class="font-hankenGrotesk text-[12px] font-bold uppercase tracking-widest text-primary mb-6 border-b border-silver-grey pb-4">Institutional Ownership</h3>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between text-[12px] font-bold mb-2">
+<span>Public Investment Fund</span>
+<span class="text-transparency-teal">34%</span>
+</div>
+<div class="h-[2px] w-full bg-surface-container">
+<div class="h-full bg-transparency-teal" style="width: 34%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[12px] font-bold mb-2">
+<span>Global Media Corp</span>
+<span class="text-transparency-teal">28%</span>
+</div>
+<div class="h-[2px] w-full bg-surface-container">
+<div class="h-full bg-transparency-teal" style="width: 28%"></div>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-silver-grey/50">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+</div>
+<div class="text-[11px] leading-tight">
+<span class="block font-bold">Conflict Check:</span>
+<span class="text-on-surface-variant">No direct lithium sector stakeholders in major ownership tiers.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sentiment Heatmap -->
+<div class="bg-surface border border-silver-grey p-6">
+<h3 class="font-hankenGrotesk text-[12px] font-bold uppercase tracking-widest text-primary mb-4">Sentiment Entropy</h3>
+<div class="flex gap-1 h-8">
+<div class="flex-1 bg-transparency-teal/20"></div>
+<div class="flex-1 bg-transparency-teal/40"></div>
+<div class="flex-1 bg-transparency-teal"></div>
+<div class="flex-1 bg-transparency-teal/60"></div>
+<div class="flex-1 bg-error/10"></div>
+<div class="flex-1 bg-error/30"></div>
+<div class="flex-1 bg-surface-container"></div>
+<div class="flex-1 bg-transparency-teal/80"></div>
+<div class="flex-1 bg-transparency-teal/90"></div>
+<div class="flex-1 bg-transparency-teal/10"></div>
+</div>
+<div class="flex justify-between mt-2 font-hankenGrotesk text-[9px] uppercase font-bold text-on-surface-variant">
+<span>Optimistic</span>
+<span>Neutral</span>
+<span>Critical</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Narrative Drift Timeline -->
+<section class="mt-section-gap">
+<div class="flex items-end gap-4 mb-8">
+<h2 class="font-ebGaramond text-[28px] font-medium text-primary">Narrative Drift</h2>
+<span class="font-hankenGrotesk text-[12px] text-on-surface-variant mb-1">Trailing 24-Hour Cycle</span>
+</div>
+<div class="bg-surface border border-silver-grey p-8 overflow-x-auto">
+<div class="min-w-[1000px] relative h-48 flex items-end justify-between px-12">
+<!-- Timeline Baseline -->
+<div class="absolute bottom-12 left-0 w-full h-[1px] bg-silver-grey"></div>
+<!-- Data Points -->
+<div class="relative flex flex-col items-center group">
+<div class="absolute bottom-16 h-20 w-[1px] bg-transparency-teal group-hover:h-24 transition-all"></div>
+<div class="w-3 h-3 bg-white border-2 border-transparency-teal rounded-full absolute bottom-[128px]"></div>
+<div class="text-[10px] font-bold uppercase mb-2">08:00 AM</div>
+<div class="text-[12px] text-on-surface-variant w-32 text-center absolute -top-12">Breaking: Market opening tensions</div>
+</div>
+<div class="relative flex flex-col items-center group">
+<div class="absolute bottom-16 h-12 w-[1px] bg-silver-grey"></div>
+<div class="w-2 h-2 bg-silver-grey rounded-full absolute bottom-[112px]"></div>
+<div class="text-[10px] font-bold uppercase mb-2">12:00 PM</div>
+<div class="text-[12px] text-on-surface-variant w-32 text-center absolute -top-12">Consolidation of official statements</div>
+</div>
+<div class="relative flex flex-col items-center group">
+<div class="absolute bottom-16 h-28 w-[1px] bg-error group-hover:h-32 transition-all"></div>
+<div class="w-3 h-3 bg-white border-2 border-error rounded-full absolute bottom-[160px]"></div>
+<div class="text-[10px] font-bold uppercase mb-2">04:00 PM</div>
+<div class="text-[12px] text-on-surface-variant w-32 text-center absolute -top-12">Narrative Shift: Speculation Peak</div>
+</div>
+<div class="relative flex flex-col items-center group">
+<div class="absolute bottom-16 h-16 w-[1px] bg-transparency-teal"></div>
+<div class="w-3 h-3 bg-white border-2 border-transparency-teal rounded-full absolute bottom-[128px]"></div>
+<div class="text-[10px] font-bold uppercase mb-2">08:00 PM</div>
+<div class="text-[12px] text-on-surface-variant w-32 text-center absolute -top-12">PRISM Correction Issued</div>
+</div>
+<div class="relative flex flex-col items-center group">
+<div class="absolute bottom-16 h-8 w-[1px] bg-silver-grey"></div>
+<div class="w-2 h-2 bg-silver-grey rounded-full absolute bottom-[96px]"></div>
+<div class="text-[10px] font-bold uppercase mb-2">12:00 AM</div>
+<div class="text-[12px] text-on-surface-variant w-32 text-center absolute -top-12">Current Stability Reached</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface border-t border-silver-grey">
+<div class="w-full py-gutter px-margin-page max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-element-gap">
+<div class="font-ebGaramond text-[28px] text-primary">PRISM</div>
+<div class="flex gap-8">
+<a class="font-hankenGrotesk text-[12px] font-medium text-on-surface-variant hover:text-secondary transition-colors" href="#">About</a>
+<a class="font-hankenGrotesk text-[12px] font-medium text-on-surface-variant hover:text-secondary transition-colors" href="#">Methodology</a>
+<a class="font-hankenGrotesk text-[12px] font-medium text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy</a>
+<a class="font-hankenGrotesk text-[12px] font-medium text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms</a>
+<a class="font-hankenGrotesk text-[12px] font-medium text-on-surface-variant hover:text-secondary transition-colors" href="#">Contact</a>
+</div>
+<div class="font-hankenGrotesk text-[12px] text-on-surface-variant">
+                © 2024 PRISM Media Transparency. All rights reserved.
+            </div>
+</div>
+</footer>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animate Score Arc
+            const arc = document.getElementById('score-arc');
+            if (arc) {
+                const totalLength = 351.8;
+                const percentage = 0.88;
+                const offset = totalLength - (totalLength * percentage);
+                setTimeout(() => {
+                    arc.style.strokeDashoffset = offset;
+                }, 500);
+            }
+
+            // Simple Interactivity for Debate Nodes
+            const nodes = document.querySelectorAll('.group');
+            nodes.forEach(node => {
+                node.addEventListener('mouseenter', () => {
+                    // Optional: highlight connecting lines or dialogue
+                });
+            });
+        });
+    </script>
+</body></html>

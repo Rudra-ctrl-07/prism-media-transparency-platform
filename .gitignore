@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+api/dist/
+*.tsbuildinfo
+
+# Env files — commit only the templates (.env.example)
+.env
+.env.*
+!.env.example
+
+# Agent + loop runtime artifacts (generated posts, memory, drafts, earnings reports)
+data/
+
+# Vendored third-party repo (clone via scripts/bootstrap-automaton.sh)
+automaton/
+
+# Logs, caches, deploy tooling
+*.log
+.cache
+.vercel
+.firebase
+pnpm-debug.log*
+
+# Editor / local tooling
+.vscode/
+.idea/
+.claude/
+
+# OS junk
+.DS_Store
+Thumbs.db
