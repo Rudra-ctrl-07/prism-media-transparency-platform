@@ -57,8 +57,8 @@ describe('intel layer registry', () => {
   });
 
   it('labels categories correctly', () => {
-    expect(categoryLabel('security')).toBe('Security & Defense');
-    expect(categoryLabel('nuclear')).toBe('Energy & Infrastructure');
+    expect(categoryLabel('security')).toBe('Geopolitical & Military');
+    expect(categoryLabel('nuclear')).toBe('Infrastructure & Trade');
   });
 
   it('time range filtering respects date windows', () => {

@@ -60,8 +60,8 @@ export const NewsTicker = ({
   return (
     <div className="flex items-stretch bg-arcade-ink text-arcade-yellow border-b-2 border-arcade-ink overflow-hidden">
       {/* Static label block */}
-      <div className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 bg-arcade-pink text-white font-display text-[11px] tracking-widest uppercase border-r-2 border-arcade-ink z-10">
-        <span className="inline-block w-2 h-2 bg-white animate-pulse" />
+      <div className="shrink-0 flex items-center gap-1 px-2 py-1.5 bg-arcade-pink text-white font-display text-[10px] tracking-widest uppercase border-r-2 border-arcade-ink z-10">
+        <span className="inline-block w-1.5 h-1.5 bg-white animate-pulse" />
         {label}
       </div>
       {/* Scrolling run */}

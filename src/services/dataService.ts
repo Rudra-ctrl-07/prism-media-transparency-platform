@@ -4,14 +4,13 @@
  * the backend is unreachable, unconfigured, or returns no data, it falls
  * back to the clearly-labeled demo dataset so every view stays functional.
  *
- * Every call reports `mode: 'live' | 'demo'` so the UI can badge the source
+ * Every call reports `mode: 'live' | 'empty'` so the UI can badge the source
  * of truth honestly.
  */
 
 import { Article, Source, VerificationResult } from '../types';
-import { demoArticles, demoSources } from './demoData';
 
-export type DataMode = 'live' | 'demo';
+export type DataMode = 'live' | 'empty';
 
 export interface FetchResult<T> {
   data: T;
@@ -81,26 +80,12 @@ export async function fetchArticles(params: {
     if (rawList.length > 0) {
       return { data: rawList.map(normalizeArticle), mode: 'live' };
     }
-    // Backend reachable but empty — surface demo data so the UI is usable,
-    // but clearly flagged so nobody mistakes it for real coverage.
-    return { data: getDemoArticles(params), mode: 'demo' };
+    // Backend reachable but empty — no demo fallback, return empty.
+    return { data: [], mode: 'empty' };
   } catch {
-    return { data: getDemoArticles(params), mode: 'demo' };
+    // Backend unreachable — no demo fallback, return empty.
+    return { data: [], mode: 'empty' };
   }
-}
-
-function getDemoArticles(params: { limit?: number; source?: string; minCredibility?: number } = {}): Article[] {
-  let list = [...demoArticles];
-  if (params.source) {
-    list = list.filter((a) => a.sourceName === params.source);
-  }
-  if (params.minCredibility !== undefined) {
-    list = list.filter((a) => a.sourceCredibility >= params.minCredibility!);
-  }
-  if (params.limit) {
-    list = list.slice(0, params.limit);
-  }
-  return list;
 }
 
 /**
@@ -114,10 +99,9 @@ export async function fetchArticle(id: string): Promise<FetchResult<Article | nu
       if (json && json.id) return { data: normalizeArticle(json), mode: 'live' };
     }
   } catch {
-    // fall through to demo
+    // fall through
   }
-  const demo = demoArticles.find((a) => a.id === id) || null;
-  return { data: demo, mode: 'demo' };
+  return { data: null, mode: 'empty' };
 }
 
 /**
@@ -150,7 +134,7 @@ export async function fetchVerification(article: Article): Promise<FetchResult<V
   } catch {
     // fall through to synthesis
   }
-  return { data: synthesizeVerification(article), mode: 'demo' };
+  return { data: synthesizeVerification(article), mode: 'empty' };
 }
 
 /** Build a VerificationResult from the article's stored bias analysis. */
@@ -226,7 +210,7 @@ export async function fetchSources(): Promise<FetchResult<Source[]>> {
   } catch {
     // fall through to demo roster
   }
-  return { data: demoSources, mode: 'demo' };
+  return { data: [], mode: 'empty' };
 }
 
 /** Convert any articles list into BiasComparison-style verification inputs. */

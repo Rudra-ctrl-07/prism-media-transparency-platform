@@ -20,6 +20,7 @@ const parser = new Parser({
 // Live, working public RSS feeds (verified 2026). Credibility is the outlet's
 // baseline editorial trust score used by the transparency engine.
 const NEWS_SOURCES = [
+  // --- Wire services & global outlets ---
   { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/world/rss.xml', credibility: 0.85 },
   { name: 'NPR News', url: 'https://feeds.npr.org/1001/rss.xml', credibility: 0.85 },
   { name: 'The Guardian', url: 'https://www.theguardian.com/world/rss', credibility: 0.84 },
@@ -27,6 +28,35 @@ const NEWS_SOURCES = [
   { name: 'Deutsche Welle', url: 'https://rss.dw.com/rdf/rss-en-world', credibility: 0.85 },
   { name: 'France 24', url: 'https://www.france24.com/en/rss', credibility: 0.83 },
   { name: 'NBC News', url: 'https://feeds.nbcnews.com/nbcnews/public/news', credibility: 0.78 },
+  { name: 'AP News', url: 'https://feedx.net/rss/ap.xml', credibility: 0.88 },
+  { name: 'Reuters', url: 'https://feeds.reuters.com/reuters/worldNews', credibility: 0.89 },
+  // --- Asia-Pacific perspective ---
+  { name: 'NHK World', url: 'https://www3.nhk.or.jp/rss/news/cat0.xml', credibility: 0.84 },
+  { name: 'South China Morning Post', url: 'https://www.scmp.com/rss/91/feed', credibility: 0.80 },
+  // --- Investigative & academic journalism ---
+  { name: 'ProPublica', url: 'https://www.propublica.org/feed?rss', credibility: 0.87 },
+  { name: 'The Conversation', url: 'https://theconversation.com/articles/feed', credibility: 0.83 },
+  // --- Tech & science ---
+  { name: 'Ars Technica', url: 'https://feeds.arstechnica.com/arstechnica/index', credibility: 0.82 },
+  { name: 'TechCrunch', url: 'https://techcrunch.com/feed/', credibility: 0.76 },
+  // --- Middle East deep-dive ---
+  { name: 'Al-Monitor', url: 'https://www.al-monitor.com/rss', credibility: 0.79 },
+  // --- India ---
+  { name: 'The Hindu', url: 'https://www.thehindu.com/news/international/feeder/default.rss', credibility: 0.83 },
+  { name: 'Times of India', url: 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms', credibility: 0.72 },
+  // --- Africa ---
+  { name: 'Daily Maverick', url: 'https://www.dailymaverick.co.za/dmrss/', credibility: 0.81 },
+  { name: 'The East African', url: 'https://www.theeastafrican.co.ke/tea/rss', credibility: 0.77 },
+  // --- Latin America ---
+  { name: 'MercoPress', url: 'https://en.mercopress.com/rss', credibility: 0.78 },
+  { name: 'Buenos Aires Times', url: 'https://www.batimes.com.ar/feed', credibility: 0.73 },
+  // --- Europe deep-dive ---
+  { name: 'EUobserver', url: 'https://euobserver.com/rss.xml', credibility: 0.82 },
+  { name: 'Euronews', url: 'https://www.euronews.com/rss', credibility: 0.80 },
+  // --- Science & health ---
+  { name: 'Nature News', url: 'https://www.nature.com/nature.rss', credibility: 0.91 },
+  { name: 'Science Magazine', url: 'https://www.science.org/rss/news_current.xml', credibility: 0.90 },
+  { name: 'The Lancet', url: 'https://www.thelancet.com/rssfeed/lancet_current.xml', credibility: 0.89 },
 ];
 
 /** Max articles ingested per source per run — bounds memory + runtime. */

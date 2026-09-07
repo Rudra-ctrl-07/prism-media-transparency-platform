@@ -154,9 +154,9 @@ export const TransparencyFeed = ({
         </div>
 
         <div className="flex items-center gap-2">
-          {mode === 'demo' && (
+          {mode === 'empty' && (
             <span className="px-2.5 py-1 rounded-full border border-amber-500/40 bg-amber-500/10 text-label-sm text-amber-700">
-              DEMO DATA
+              NO LIVE DATA
             </span>
           )}
           {lastUpdated && (
@@ -229,7 +229,7 @@ export const TransparencyFeed = ({
             className="border border-silver-grey rounded px-2 py-1 text-label-sm bg-surface text-on-surface"
           >
             <option value="all">All categories</option>
-            {['Home', 'Business', 'Politics', 'Science', 'Tech'].map((c) => (
+            {['Home', 'Business', 'Politics', 'Science', 'Tech', 'Sports', 'Education', 'Entertainment'].map((c) => (
               <option key={c} value={c}>
                 {c}
               </option>

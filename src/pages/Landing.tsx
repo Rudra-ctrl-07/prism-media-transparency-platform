@@ -18,7 +18,7 @@ import { Article } from "../types";
  */
 export default function Landing({ onCtaClick }: { onCtaClick?: () => void }) {
   const [liveArticles, setLiveArticles] = useState<Article[]>([]);
-  const [liveMode, setLiveMode] = useState<"live" | "demo" | "offline">("offline");
+  const [liveMode, setLiveMode] = useState<"live" | "empty" | "offline">("offline");
 
   useEffect(() => {
     let cancelled = false;
@@ -135,7 +135,7 @@ export default function Landing({ onCtaClick }: { onCtaClick?: () => void }) {
                   className={`flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest ${
                     liveMode === "live"
                       ? "text-red-600"
-                      : liveMode === "demo"
+                      : liveMode === "empty"
                       ? "text-amber-500"
                       : "text-arcade-ink/60"
                   }`}
@@ -148,13 +148,13 @@ export default function Landing({ onCtaClick }: { onCtaClick?: () => void }) {
                       className={`relative inline-flex rounded-full h-1.5 w-1.5 ${
                         liveMode === "live"
                           ? "bg-red-500"
-                          : liveMode === "demo"
+                          : liveMode === "empty"
                           ? "bg-amber-500"
                           : "bg-arcade-ink/40"
                       }`}
                     />
                   </span>
-                  {liveMode === "live" ? "LIVE" : liveMode === "demo" ? "Sample" : "Connecting…"}
+                  {liveMode === "live" ? "LIVE" : liveMode === "empty" ? "No Data" : "Connecting…"}
                 </span>
               </div>
 
@@ -229,22 +229,6 @@ export default function Landing({ onCtaClick }: { onCtaClick?: () => void }) {
               <h3 className="font-display text-[20px] leading-snug mb-2">Story Tracker</h3>
               <p className="font-body text-[13px] font-medium opacity-90 leading-relaxed">
                 Live story clustering with corroboration counts across outlets.
-              </p>
-              <span className="inline-block mt-4 font-body text-[11px] font-bold uppercase tracking-widest underline underline-offset-4">
-                Open →
-              </span>
-            </a>
-
-            {/* Pink — Intel Map */}
-            <a
-              href="#/"
-              onClick={onCtaClick}
-              className="group bg-arcade-pink text-white border-2 border-arcade-ink shadow-brutal p-6 hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all"
-            >
-              <span className="text-[32px] block mb-4">🛰️</span>
-              <h3 className="font-display text-[20px] leading-snug mb-2">Intel Map</h3>
-              <p className="font-body text-[13px] font-medium opacity-90 leading-relaxed">
-                40+ live data layers — conflict, energy, chokepoints — in 2D or 3D.
               </p>
               <span className="inline-block mt-4 font-body text-[11px] font-bold uppercase tracking-widest underline underline-offset-4">
                 Open →

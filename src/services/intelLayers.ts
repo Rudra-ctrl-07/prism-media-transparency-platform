@@ -48,6 +48,26 @@ import {
   economicCenters,
   criticalMinerals,
   orbitalSurveillance,
+  ransomwareAttacks,
+  dataBreaches,
+  aptCampaigns,
+  lngTerminals,
+  oilRefineries,
+  renewableProjects,
+  powerGridLinks,
+  migrationRoutes,
+  borderCrossings,
+  unhcrOperations,
+  liveNewsFeeds,
+  liveWebcams,
+  countryInstability,
+  strategicRisks,
+  regionPresets,
+  LiveFeed,
+  LiveWebcam,
+  CountryInstability,
+  StrategicRisk,
+  RegionPreset,
 } from '../data/intelData';
 
 // ---------------------------------------------------------------------------
@@ -132,6 +152,34 @@ export const INTEL_LAYERS: IntelLayerDef[] = [
   { id: 'critical-minerals', label: 'Critical Minerals', category: 'socio', points: criticalMinerals },
   { id: 'orbital-surveillance', label: 'Orbital Surveillance', category: 'socio', points: orbitalSurveillance },
   { id: 'space-launch-sites', label: 'Space Launch Sites', category: 'security', points: launchSites },
+
+  // --- Expanded Cyber layers ---
+  { id: 'ransomware-attacks', label: 'Ransomware Attacks', category: 'hazards', points: ransomwareAttacks },
+  { id: 'data-breaches', label: 'Data Breaches', category: 'hazards', points: dataBreaches },
+  { id: 'apt-campaigns', label: 'APT Campaigns', category: 'hazards', points: aptCampaigns },
+
+  // --- Expanded Energy layers ---
+  { id: 'lng-terminals', label: 'LNG Terminals', category: 'nuclear', points: lngTerminals },
+  { id: 'oil-refineries', label: 'Oil Refineries', category: 'nuclear', points: oilRefineries },
+  { id: 'renewable-projects', label: 'Renewable Mega-Projects', category: 'nuclear', points: renewableProjects },
+  { id: 'power-grid-links', label: 'Power Grid Interconnections', category: 'nuclear', lines: powerGridLinks },
+
+  // --- Expanded Migration layers ---
+  { id: 'migration-routes', label: 'Migration Routes', category: 'socio', lines: migrationRoutes },
+  { id: 'border-crossings', label: 'Border Crossing Hotspots', category: 'socio', points: borderCrossings },
+  { id: 'unhcr-operations', label: 'UNHCR Major Operations', category: 'socio', points: unhcrOperations },
+
+  // --- OSINT Live Layers (500+ feeds) ---
+  { id: 'nasa-firms', label: '🔥 NASA FIRMS (Live Fires)', category: 'hazards', live: true },
+  { id: 'aviation-live', label: '✈️ OpenSky Live Aviation', category: 'transport', live: true },
+  { id: 'eonet-events', label: '🌍 NASA EONET (Natural Events)', category: 'hazards', live: true },
+  { id: 'eccc-alerts', label: '🇨🇦 ECCC Weather Alerts', category: 'transport', live: true },
+  { id: 'wmo-swic', label: '🌍 WMO Severe Weather', category: 'transport', live: true },
+  { id: 'noaa-alerts', label: '🇺🇸 NOAA Active Alerts', category: 'transport', live: true },
+  { id: 'gdelt-events', label: '📰 GDELT Global Events', category: 'socio', live: true },
+  { id: 'acled-events', label: '⚔️ ACLED Conflict Events', category: 'security', live: true },
+  { id: 'ais-traffic', label: '🚢 AIS Live Ship Traffic', category: 'transport', live: true },
+  { id: 'satellite-tracks', label: '🛰️ Satellite Tracking (SGP4)', category: 'security', live: true },
 ];
 
 export const INTEL_LAYER_COUNT = INTEL_LAYERS.length;
@@ -267,6 +315,16 @@ export async function getLayerPoints(layer: IntelLayerDef): Promise<IntelPoint[]
   if (layer.id === 'weather-alerts') points = await fetchNwsAlerts();
   else if (layer.id === 'natural-events') points = await fetchUsgsQuakes();
   else if (layer.id === 'aircraft-adsb') points = await fetchAircraft();
+  else if (layer.id === 'nasa-firms') { const { fetchNasaFirms } = await import('./osintFetchers'); points = await fetchNasaFirms(); }
+  else if (layer.id === 'aviation-live') { const { fetchOpenSkyFlights } = await import('./osintFetchers'); points = await fetchOpenSkyFlights(); }
+  else if (layer.id === 'eonet-events') { const { fetchNasaEonet } = await import('./osintFetchers'); points = await fetchNasaEonet(); }
+  else if (layer.id === 'eccc-alerts') { const { fetchEcccAlerts } = await import('./osintFetchers'); points = await fetchEcccAlerts(); }
+  else if (layer.id === 'wmo-swic') { const { fetchWmoSwic } = await import('./osintFetchers'); points = await fetchWmoSwic(); }
+  else if (layer.id === 'noaa-alerts') { const { fetchNoaaAlerts } = await import('./osintFetchers'); points = await fetchNoaaAlerts(); }
+  else if (layer.id === 'gdelt-events') { const { fetchGdeltGeolocated } = await import('./osintFetchers'); points = await fetchGdeltGeolocated(); }
+  else if (layer.id === 'acled-events') { const { fetchAcledEvents } = await import('./osintFetchers'); points = await fetchAcledEvents(); }
+  else if (layer.id === 'ais-traffic') { const { fetchAisShipTraffic } = await import('./osintFetchers'); points = await fetchAisShipTraffic(); }
+  else if (layer.id === 'satellite-tracks') { const { fetchSatellitePositions } = await import('./satelliteTracker'); points = await fetchSatellitePositions(); }
   liveCache.set(layer.id, { at: Date.now(), points });
   return points;
 }
@@ -354,11 +412,11 @@ export function inTimeRange(point: { date?: string }, range: TimeRange, now = ne
 // ---------------------------------------------------------------------------
 
 export const CATEGORY_COLORS: Record<string, string> = {
-  security: '#f87171',
-  nuclear: '#fbbf24',
-  transport: '#4fc3f7',
-  hazards: '#a78bfa',
-  socio: '#60a5fa',
+  security: '#ef4444', // Geopolitical & Military — red
+  nuclear: '#f59e0b', // Infrastructure & Trade — amber
+  transport: '#3b82f6', // Transport & Chokepoints — blue
+  hazards: '#8b5cf6', // Environmental & Risk — purple
+  socio: '#10b981', // Socio-Political & Economic — green
 };
 
 export function severityColor(severity: number, base: string): string {
@@ -371,10 +429,10 @@ export function severityColor(severity: number, base: string): string {
 export function categoryLabel(category: string): string {
   return (
     {
-      security: 'Security & Defense',
-      nuclear: 'Energy & Infrastructure',
+      security: 'Geopolitical & Military',
+      nuclear: 'Infrastructure & Trade',
       transport: 'Transport & Chokepoints',
-      hazards: 'Disruptions & Hazards',
+      hazards: 'Environmental & Risk',
       socio: 'Socio-Political & Economic',
     }[category] || category
   );

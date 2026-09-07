@@ -1,0 +1,13 @@
+node_modules/
+/automaton/
+/data/
+/docs/
+/api/
+*.log
+.cache
+.firebase
+.claude/
+.DS_Store
+Thumbs.db
+*.tsbuildinfo
+pnpm-debug.log*

@@ -29,7 +29,7 @@ export interface Article {
   title: string;
   excerpt: string;
   content?: string;
-  category: 'Home' | 'Business' | 'Politics' | 'Science' | 'Tech';
+  category: 'Home' | 'Business' | 'Politics' | 'Science' | 'Tech' | 'Sports' | 'Education' | 'Entertainment';
   sourceName: string;
   sourceCredibility: number;
   biasRating: 'Left' | 'Center-Left' | 'Center' | 'Center-Right' | 'Right';

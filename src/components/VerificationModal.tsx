@@ -47,7 +47,7 @@ export const VerificationModal = ({
   const [verification, setVerification] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [mode, setMode] = useState<'live' | 'demo'>('live');
+  const [mode, setMode] = useState<'live' | 'empty'>('live');
 
   // Fetch real verification data when modal opens or articleId changes.
   // Tries the live `/api/articles/:id/verify?deep=true` endpoint; when the
@@ -128,9 +128,9 @@ export const VerificationModal = ({
               <span>{source}</span>
               <span className="w-0.5 h-0.5 bg-on-surface-variant/20 rounded-full mx-2"></span>
               <span>{Math.round(sourceCredibility * 100)}% Credibility</span>
-              {mode === 'demo' && (
+              {mode === 'empty' && (
                 <span className="px-2 py-0.5 rounded-full border border-amber-500/40 bg-amber-500/10 text-label-sm text-amber-700">
-                  DEMO ANALYSIS
+                  LOCAL ANALYSIS
                 </span>
               )}
             </div>

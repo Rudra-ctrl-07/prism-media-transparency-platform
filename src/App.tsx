@@ -18,6 +18,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useCallback, useEffect, useMemo, useState, FormEvent } from 'react';
 import { Bell, Plus, X, Trash2, LayoutGrid, ChevronDown, Check } from 'lucide-react';
+import { SearchBar } from './components/SearchBar';
+import { DailyDigest } from './components/DailyDigest';
+import { requestNotificationPermission, checkAndNotify } from './utils/notifications';
 import { useLocalStorageState } from './utils/storage';
 import { TransparencyFeed } from './components/TransparencyFeed';
 import { StoryTrackerView } from './components/StoryTrackerView';
@@ -26,6 +29,7 @@ import { DashboardView, AlertItem } from './components/DashboardView';
 import { MapView } from './components/MapView';
 import { GlobeView } from './components/GlobeView';
 import { BiasComparePanel, MAX_COMPARE } from './components/BiasComparePanel';
+
 import { IntelMapView } from './components/IntelMapView';
 import { IntelBriefView } from './components/IntelBriefView';
 import { IntelMarketsView } from './components/IntelMarketsView';
@@ -62,6 +66,7 @@ const RequireAuth = ({ children }: { children: JSX.Element }) => {
 
 type TabKey =
   | 'dashboard'
+  | 'digest'
   | 'intel'
   | 'brief'
   | 'markets'
@@ -78,6 +83,7 @@ type TabKey =
 
 const TABS: { key: TabKey; label: string; glyph: string }[] = [
   { key: 'dashboard', label: 'Dashboard', glyph: '🛰️' },
+  { key: 'digest', label: 'Daily Digest', glyph: '📋' },
   { key: 'intel', label: 'Intel Map', glyph: '🗺️' },
   { key: 'brief', label: 'Intel Brief', glyph: '📡' },
   { key: 'markets', label: 'Markets & Feeds', glyph: '📈' },
@@ -300,6 +306,20 @@ const AppLayout = () => {
     [watchQuery, watchSource, setUserAlerts],
   );
 
+  // Browser notifications for watch alerts
+  useEffect(() => {
+    if (userAlerts.length > 0 && articles.length > 0) {
+      checkAndNotify(articles, userAlerts);
+    }
+  }, [articles, userAlerts]);
+
+  // Request notification permission when user creates first watch alert
+  useEffect(() => {
+    if (userAlerts.length === 1) {
+      requestNotificationPermission();
+    }
+  }, [userAlerts]);
+
   // Debate statement — use the most recent flagged or top article as the
   // default claim so the debate view opens with a concrete subject.
   const debateStatement = useMemo(() => {
@@ -360,7 +380,9 @@ const AppLayout = () => {
               title={
                 mode === 'live'
                   ? 'Streaming live articles from the PRISM ingestion backend'
-                  : 'Backend unreachable — showing clearly-labeled demo data'
+                  : mode === 'empty'
+                  ? 'Backend unreachable or empty — start the backend with cd api && npm run dev'
+                  : 'Connecting...'
               }
             >
               <span className={`relative flex h-2 w-2 ${mode === 'live' ? '' : 'opacity-70'}`}>
@@ -373,22 +395,26 @@ const AppLayout = () => {
                   }`}
                 />
               </span>
-              {mode === 'live' ? 'LIVE' : 'DEMO DATA'}
+              {mode === 'live' ? 'LIVE' : mode === 'empty' ? 'NO DATA' : 'LIVE'}
             </div>
 
-            <span className="hidden lg:block text-[11px] font-semibold text-arcade-ink/70">
+            <span className="hidden xl:block text-[10px] font-semibold text-arcade-ink/70 whitespace-nowrap">
               {stats.sourcesCount} sources • {stats.total} articles
-              {lastUpdated ? ` • updated ${formatTimeAgo(lastUpdated)}` : ''}
+              {lastUpdated ? ` • ${formatTimeAgo(lastUpdated)}` : ''}
             </span>
 
             <button
               onClick={() => loadArticles(true)}
               disabled={refreshing || loading}
-              className="flex items-center gap-1.5 px-2.5 py-1 bg-white border-2 border-arcade-ink text-[11px] font-bold shadow-brutal-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all disabled:opacity-50"
+              className="flex items-center gap-1 px-2 py-1 bg-white border-2 border-arcade-ink text-[11px] font-bold shadow-brutal-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all disabled:opacity-50"
+              title="Refresh articles"
             >
               <span className={refreshing ? 'inline-block animate-spin' : ''}>⟳</span>
-              Refresh
+              <span className="hidden sm:inline">Refresh</span>
             </button>
+
+            {/* Search */}
+            <SearchBar articles={articles} onSelectArticle={setAlertArticle} />
 
             {/* Watch alert control */}
             <div className="relative">
@@ -428,15 +454,15 @@ const AppLayout = () => {
             <div className="relative">
               <button
                 onClick={() => setShowToolsMenu((v) => !v)}
-                className={`flex items-center gap-1.5 px-2.5 py-1.5 border-2 border-arcade-ink text-[11px] font-bold transition-all ${
+                className={`flex items-center gap-1 px-2 py-1.5 border-2 border-arcade-ink text-[11px] font-bold transition-all max-w-[180px] overflow-hidden ${
                   showToolsMenu
                     ? 'bg-arcade-blue text-arcade-ink shadow-brutal-sm'
                     : 'bg-white text-arcade-ink shadow-brutal-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'
                 }`}
               >
-                <LayoutGrid className="w-3.5 h-3.5" />
-                {activeLabel}
-                <ChevronDown className="w-3 h-3" />
+                <LayoutGrid className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">{activeLabel}</span>
+                <ChevronDown className="w-3 h-3 shrink-0" />
               </button>
 
               {showToolsMenu && (
@@ -476,6 +502,31 @@ const AppLayout = () => {
         </div>
       )}
 
+        {/* Empty state when backend is unreachable */}
+        {articles.length === 0 && !loading && (
+          <div className="flex-1 flex items-center justify-center p-8">
+            <div className="text-center max-w-md">
+              <div className="text-[48px] mb-4">📡</div>
+              <h2 className="font-headline-md text-[20px] text-arcade-ink mb-2">
+                No Live Data Available
+              </h2>
+              <p className="text-[12px] text-arcade-ink/60 mb-4 leading-relaxed">
+                The backend is not running or has no articles yet. Start the backend
+                to ingest real news from 28+ RSS feeds worldwide.
+              </p>
+              <div className="bg-white border-2 border-arcade-ink p-4 text-left">
+                <p className="text-[11px] font-bold text-arcade-ink/70 mb-2">Quick start:</p>
+                <code className="block text-[11px] font-mono text-arcade-ink bg-arcade-yellow/30 p-2 border border-arcade-ink/20">
+                  cd api && npm install && npm run dev
+                </code>
+                <p className="text-[10px] text-arcade-ink/50 mt-2">
+                  Backend runs on port 3000, frontend proxies API calls automatically.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
       {/* Breadcrumb for tool views (the dashboard itself is full-bleed) */}
       {activeTab !== 'dashboard' && (
         <div className="shrink-0 flex items-center gap-3 px-4 py-1.5 border-b-2 border-arcade-ink bg-arcade-yellow">
@@ -494,6 +545,15 @@ const AppLayout = () => {
 
       {/* Active view */}
       <main className="flex-1 min-h-0 overflow-hidden">
+        {activeTab === 'digest' && (
+          <DailyDigest
+            articles={articles}
+            loading={loading}
+            onRefresh={() => loadArticles(true)}
+            onSelectArticle={setAlertArticle}
+            onNavigateToFeed={() => setActiveTab('feed')}
+          />
+        )}
         {activeTab === 'dashboard' && (
           <DashboardView
             articles={articles}
@@ -541,6 +601,7 @@ const AppLayout = () => {
             </div>
           </div>
         )}
+
         {activeTab === 'intel' && <IntelMapView />}
         {activeTab === 'brief' && <IntelBriefView articles={articles} />}
         {activeTab === 'markets' && <IntelMarketsView articles={articles} />}
@@ -826,6 +887,9 @@ const App = () => {
           </AppShell>
         }
       />
+
+      {/* World Monitor — standalone full-screen map */}
+      <Route path="/world-monitor" element={<IntelMapView />} />
 
       {/* Auth */}
       <Route path="/login" element={<LoginPage />} />
