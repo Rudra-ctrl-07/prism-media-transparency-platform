@@ -38,3 +38,6 @@ Thumbs.db
 # Large architecture PDFs (kept locally, excluded from repo)
 docs/plans/ARCHI_MERGED_DOC.pdf
 docs/plans/ARCHI_MERGED_DOC_compressed.pdf
+
+# API runtime artifacts
+api/data/
