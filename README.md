@@ -266,6 +266,17 @@ All "useless" artifacts (old monolithic `server.ts` files, `mingit/`, `new_ui/`
 mockups, deployment caches, etc.) are preserved at `../bin/` per the merge brief —
 **nothing was deleted**, just relocated.
 
+## Architecture documents
+
+The full architecture PDFs are hosted as GitHub Release assets (excluded from the
+repo itself due to GitHub's file-size limits):
+
+- [`ARCHI_MERGED_DOC.pdf` — complete merged architecture doc (168 MB)](https://github.com/Rudra-ctrl-07/prism-media-transparency-platform/releases/download/architecture-docs/ARCHI_MERGED_DOC.pdf)
+- [`ARCHI_MERGED_DOC_compressed.pdf` — compressed version (64 MB)](https://github.com/Rudra-ctrl-07/prism-media-transparency-platform/releases/download/architecture-docs/ARCHI_MERGED_DOC_compressed.pdf)
+
+Smaller docs (target architecture, RFLP, scaling roadmap, SVG diagrams) live in
+[`docs/plans/`](docs/plans/).
+
 ## License
 
 MIT (per Conway Automaton's license — adopted across the merge).
