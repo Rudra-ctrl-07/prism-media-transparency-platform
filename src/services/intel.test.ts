@@ -136,10 +136,11 @@ describe('intel derived intelligence', () => {
   });
 
   it('computes a risk overview with convergence + counters', () => {
+    const daysAgo = (n: number) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
     const layerPoints = new Map<string, any[]>();
     layerPoints.set('conflict-zones', [
-      { label: 'Ukraine', lat: 48, lng: 38, severity: 1, date: '2026-08-13' },
-      { label: 'Gaza', lat: 31.5, lng: 34.5, severity: 1, date: '2026-08-13' },
+      { label: 'Ukraine', lat: 48, lng: 38, severity: 1, date: daysAgo(2) },
+      { label: 'Gaza', lat: 31.5, lng: 34.5, severity: 1, date: daysAgo(2) },
     ]);
     layerPoints.set('cable-incidents', [
       { label: 'Baltic cable damage', lat: 55.5, lng: 19.5, severity: 0.75, date: '2024-11-18' },
