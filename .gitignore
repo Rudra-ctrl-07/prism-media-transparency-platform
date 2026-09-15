@@ -12,7 +12,7 @@ api/dist/
 !.env.example
 
 # Agent + loop runtime artifacts (generated posts, memory, drafts, earnings reports)
-data/
+/data/
 
 # Vendored third-party repo (clone via scripts/bootstrap-automaton.sh)
 automaton/
