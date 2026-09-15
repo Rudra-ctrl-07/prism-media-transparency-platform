@@ -1,5 +1,7 @@
 # PRISM — Media Transparency Platform
 
+[![CI](https://github.com/Rudra-ctrl-07/prism-media-transparency-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/Rudra-ctrl-07/prism-media-transparency-platform/actions/workflows/ci.yml)
+
 Unified merge of three project iterations (**New_Prizm**, **Prizm_Large**, **prism**)
 plus an integration with the **Conway Automaton** sovereign AI agent runtime.
 
